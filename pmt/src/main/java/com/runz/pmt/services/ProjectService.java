@@ -33,6 +33,8 @@ public class ProjectService {
         return project;
     }
 
+    <<<<<<<HEAD
+
     public Iterable<Project> findAll() {
         return projectRepository.findAll();
     }
@@ -41,6 +43,17 @@ public class ProjectService {
         Project project = projectRepository.findByProjectIdentifier(identifier.toUpperCase());
 
         if (project == null) {
+=======
+
+    public Iterable<Project> findAll() {
+        return projectRepository.findAll();
+    }
+
+    public void deleteByProjectIdentifier(String identifier){
+        Project project = projectRepository.findByProjectIdentifier(identifier.toUpperCase());
+
+        if(project == null){
+>>>>>>> Project Entity CRUD functions
             throw new ProjectIdException("Project under ID: " + identifier.toUpperCase() + ", does not exist");
         }
 
