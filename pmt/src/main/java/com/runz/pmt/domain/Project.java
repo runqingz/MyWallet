@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
 @Entity
 public class Project {
 
@@ -105,7 +104,6 @@ public class Project {
     public void setModifiedAt(Date modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
-
 
     @PrePersist
     protected void onCreate() {

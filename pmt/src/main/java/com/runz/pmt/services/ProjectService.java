@@ -13,33 +13,34 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
-    public Project saveOrUpdateProject(Project project){
+    public Project saveOrUpdateProject(Project project) {
         try {
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
             return projectRepository.save(project);
-        }catch(Exception e) {
-            throw new ProjectIdException("Project ID: " + project.getProjectIdentifier().toUpperCase() + ", Already exists");
+        } catch (Exception e) {
+            throw new ProjectIdException(
+                    "Project ID: " + project.getProjectIdentifier().toUpperCase() + ", Already exists");
         }
     }
 
-    public Project findByProjectIdentifier(String identifier){
+    public Project findByProjectIdentifier(String identifier) {
         Project project = projectRepository.findByProjectIdentifier(identifier.toUpperCase());
 
-        if(project == null){
+        if (project == null) {
             throw new ProjectIdException("Project under ID: " + identifier.toUpperCase() + ", does not exist");
         }
 
         return project;
     }
 
-    public Iterable<Project> findAll(){
+    public Iterable<Project> findAll() {
         return projectRepository.findAll();
     }
 
-    public void deleteByProjectIdentifier(String identifier){
+    public void deleteByProjectIdentifier(String identifier) {
         Project project = projectRepository.findByProjectIdentifier(identifier.toUpperCase());
 
-        if(project == null){
+        if (project == null) {
             throw new ProjectIdException("Project under ID: " + identifier.toUpperCase() + ", does not exist");
         }
 
