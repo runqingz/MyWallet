@@ -1,3 +1,4 @@
+![build](https://github.com/runqingz/PersonalManagementTool/workflows/build/badge.svg)
 # PersonalManagementTool
 jira-like Personal Projects and Tasks management tool
 
