@@ -1,10 +1,10 @@
-package com.runz.pmt;
+package com.runz.pmtool;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class PersonalManagementToolApplicationTests {
 
 	@Test
 	void contextLoads() {

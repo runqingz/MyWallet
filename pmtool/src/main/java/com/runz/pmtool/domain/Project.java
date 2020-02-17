@@ -1,4 +1,4 @@
-package com.runz.pmt.domain;
+package com.runz.pmtool.domain;
 
 import java.util.Date;
 

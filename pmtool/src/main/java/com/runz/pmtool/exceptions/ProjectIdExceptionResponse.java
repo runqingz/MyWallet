@@ -1,4 +1,4 @@
-package com.runz.pmt.exceptions;
+package com.runz.pmtool.exceptions;
 
 public class ProjectIdExceptionResponse {
 

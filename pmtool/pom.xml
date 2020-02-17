@@ -8,7 +8,7 @@
     <relativePath/>
   </parent>
   <groupId>com.runz</groupId>
-  <artifactId>pmt</artifactId>
+  <artifactId>pmtool</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>demo</name>
   <description>Demo project for Spring Boot</description>

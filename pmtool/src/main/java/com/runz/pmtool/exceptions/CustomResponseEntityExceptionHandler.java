@@ -1,4 +1,4 @@
-package com.runz.pmt.exceptions;
+package com.runz.pmtool.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

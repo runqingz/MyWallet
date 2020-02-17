@@ -1,10 +1,10 @@
-package com.runz.pmt.controller;
+package com.runz.pmtool.controller;
 
 import javax.validation.Valid;
 
-import com.runz.pmt.domain.Project;
-import com.runz.pmt.services.MapValidationService;
-import com.runz.pmt.services.ProjectService;
+import com.runz.pmtool.domain.Project;
+import com.runz.pmtool.services.MapValidationService;
+import com.runz.pmtool.services.ProjectService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController {
@@ -31,11 +29,12 @@ public class ProjectController {
     private MapValidationService mapValidationService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
 
         ResponseEntity<?> errorMap = mapValidationService.validateMap(result);
 
-        if(errorMap != null) return errorMap;
+        if (errorMap != null)
+            return errorMap;
 
         Project project1 = projectService.saveOrUpdateProject(project);
         return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
@@ -47,7 +46,7 @@ public class ProjectController {
     }
 
     @GetMapping("/all")
-    public Iterable<Project> getAllProjects(){
+    public Iterable<Project> getAllProjects() {
         return projectService.findAll();
     }
 
@@ -57,5 +56,5 @@ public class ProjectController {
 
         return new ResponseEntity<String>("Project under ID: " + projectId + ", deleted", HttpStatus.OK);
     }
-    
+
 }

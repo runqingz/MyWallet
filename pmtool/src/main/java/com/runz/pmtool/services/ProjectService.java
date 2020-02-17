@@ -1,8 +1,8 @@
-package com.runz.pmt.services;
+package com.runz.pmtool.services;
 
-import com.runz.pmt.domain.Project;
-import com.runz.pmt.exceptions.ProjectIdException;
-import com.runz.pmt.repositories.ProjectRepository;
+import com.runz.pmtool.domain.Project;
+import com.runz.pmtool.exceptions.ProjectIdException;
+import com.runz.pmtool.repositories.ProjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
