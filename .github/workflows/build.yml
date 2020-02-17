@@ -13,4 +13,10 @@ jobs:
         with:
           java-version: 1.8
       - name: Build with Maven
-        run: mvn -B package --file pmtool/pom.xml
+        run: mvn -B package --file pom.xml
+      - name: Setup Node.js for use with actions
+        uses: actions/setup-node@v1.1.0
+      - name: Install Node.js dependencies
+        run: npm install
+      - name: Node build
+        run: npm run build
