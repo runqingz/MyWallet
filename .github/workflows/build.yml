@@ -14,3 +14,7 @@ jobs:
           java-version: 1.8
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: Install Node.js dependencies
+        run: npm install
+      - name: Node build
+        run: npm run build
