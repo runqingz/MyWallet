@@ -16,9 +16,6 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Setup Node.js for use with actions
         uses: actions/setup-node@v1.1.0
-        with:
-          # Version Spec of the version to use.  Examples: 10.x, 10.15.1, >=10.15.0, lts
-          version: lts
       - name: Install Node.js dependencies
         run: npm install
       - name: Node build
