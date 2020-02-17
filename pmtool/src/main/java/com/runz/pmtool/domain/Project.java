@@ -14,13 +14,6 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> Project Entity CRUD functions
-=======
->>>>>>> formatting
 @Entity
 public class Project {
 
@@ -112,13 +105,6 @@ public class Project {
         this.modifiedAt = modifiedAt;
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> Project Entity CRUD functions
-=======
->>>>>>> formatting
     @PrePersist
     protected void onCreate() {
         this.modifiedAt = new Date();
