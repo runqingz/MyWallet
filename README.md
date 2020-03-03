@@ -13,6 +13,12 @@ For building and running the application you need:
 
 To Run the project [Spring Boot Maven plugin](https://docs.spring.io/spring-boot/docs/current/reference/html/build-tool-plugins-maven-plugin.html) like so:
 
+### SprintBoot Server
+```shell
+mvn spring-boot:run
+```
+
+### React Client
 ```shell
 mvn spring-boot:run
 ```
