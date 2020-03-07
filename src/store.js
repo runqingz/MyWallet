@@ -5,6 +5,7 @@ import rootReducer from './web/reducers';
 
 const initialState = {};
 const middleware = [thunk];
+// eslint-disable-next-line import/no-mutable-exports
 let store;
 
 if (window.navigator.userAgent.includes('Chrome') || window.navigator.userAgent.includes('Firefox')) {

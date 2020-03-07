@@ -7,7 +7,7 @@ import Dashboard from './web/components/Dashboard';
 import Header from './web/components/layout/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddProject from './web/components/project/AddProject';
-import store from './store'
+import store from './store';
 
 function App() {
   return (

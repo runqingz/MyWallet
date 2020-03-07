@@ -9,5 +9,4 @@ const NewProjectButton = () => (
   </>
 );
 
-
 export default NewProjectButton;
