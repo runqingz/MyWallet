@@ -25,7 +25,7 @@ public class Project {
     private String projectName;
 
     @NotBlank(message = "Project Identifier is required")
-    @Size(min = 0, max = 5, message = "Please use a identifier less than 5 characters")
+    @Size(max = 5, message = "Please use a identifier less than 5 characters")
     @Column(updatable = false, unique = true)
     private String projectIdentifier;
 
