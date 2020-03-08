@@ -1,13 +1,10 @@
 /* eslint-disable react/jsx-closing-tag-location */
-import React, { useState } from 'react';
-import { Switch, Route, withRouter, Link } from 'react-router-dom';
-import { Layout, Menu } from 'antd';
-// icons taken from antd template
-import {
-  HomeOutlined,
-  PieChartOutlined,
-  AppstoreAddOutlined,
-} from '@ant-design/icons';
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import { Layout } from 'antd';
+
+// Component
+import Sider from './web/components/layout/Sider';
 
 // Pages
 import Home from './web/components/Home';
@@ -16,34 +13,12 @@ import UserHeader from './web/components/layout/Header';
 import AddProject from './web/components/project/AddProject';
 
 // eslint-disable-next-line object-curly-newline
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Footer } = Layout;
 
 function Routes() {
-  const [collapsed, setCollapsed] = useState(false);
-
   return (
     <Layout className="site-sider" style={{ minHeight: '100vh' }}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={setCollapsed}
-      >
-        <div className="logo" />
-        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-          <Menu.Item key="1">
-            <HomeOutlined />
-            <Link to="/">Home</Link>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <PieChartOutlined />
-            <Link to="/dashboard">Dashboard</Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <AppstoreAddOutlined />
-            <Link to="/addProject">Add Project</Link>
-          </Menu.Item>
-        </Menu>
-      </Sider>
+      <Sider />
       <Layout className="site-layout">
         <Header className="site-layout-header" style={{ padding: 0 }}>
           <UserHeader />
@@ -59,6 +34,6 @@ function Routes() {
       </Layout>
     </Layout>
   );
-};
+}
 
-export default withRouter(Routes);
+export default Routes;
