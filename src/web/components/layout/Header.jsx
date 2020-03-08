@@ -12,14 +12,6 @@ function Header() {
         </button>
 
         <div className="collapse navbar-collapse" id="mobile-nav">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/dashboard">
-                Dashboard
-              </a>
-            </li>
-          </ul>
-
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
               <a className="nav-link " href="register.html">
