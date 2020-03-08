@@ -1,8 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import createProject from '../../actions/projectActions';
 
-export default class AddProject extends Component {
+class AddProject extends Component {
   constructor() {
     super();
 
@@ -33,7 +36,7 @@ export default class AddProject extends Component {
       endDate: this.state.endDate,
     };
 
-    console.log(newProject);
+    this.props.createProject(newProject, this.props.history);
   }
 
   render() {
@@ -104,3 +107,9 @@ export default class AddProject extends Component {
     );
   }
 }
+
+AddProject.propTypes = {
+  createProject: PropTypes.func.isRequired,
+};
+
+export default connect(null, { createProject })(AddProject);
