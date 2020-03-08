@@ -4,7 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Layout } from 'antd';
 
 // Component
-import Sider from './web/components/layout/Sider';
+import SideNavbar from './web/components/layout/SideNavbar';
 
 // Pages
 import Home from './web/components/Home';
@@ -17,10 +17,10 @@ const { Header, Content, Footer } = Layout;
 
 function Routes() {
   return (
-    <Layout className="site-sider" style={{ minHeight: '100vh' }}>
-      <Sider />
-      <Layout className="site-layout">
-        <Header className="site-layout-header" style={{ padding: 0 }}>
+    <Layout className="site-layout" style={{ minHeight: '100vh' }}>
+      <SideNavbar />
+      <Layout className="site-layout-header">
+        <Header className="header" style={{ padding: 0 }}>
           <UserHeader />
         </Header>
         <Content className="site-layout-content">

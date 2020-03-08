@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu } from 'antd';
+import { Layout, Menu } from 'antd';
 
 // icons taken from antd template
 import {
@@ -9,7 +9,9 @@ import {
   AppstoreAddOutlined,
 } from '@ant-design/icons';
 
-function Sider() {
+const { Sider } = Layout;
+
+function SideNavbar() {
   const [collapsed, setCollapsed] = useState(false);
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
@@ -32,4 +34,4 @@ function Sider() {
   );
 }
 
-export default Sider;
+export default SideNavbar;
