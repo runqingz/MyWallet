@@ -24,6 +24,7 @@ class AddProject extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  // Deprecated
   // componentWillReceiveProps(nextProps) {
   //   if (nextProps.errors) {
   //     this.setState({errors: nextProps.errors});
@@ -138,6 +139,7 @@ class AddProject extends Component {
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
