@@ -2,12 +2,12 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prefer-stateless-function */
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import createProject from '../../actions/projectActions';
 
-class AddProject extends Component {
+class AddProject extends React.Component {
   constructor() {
     super();
 
