@@ -8,6 +8,7 @@ import Header from './web/components/layout/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AddProject from './web/components/project/AddProject';
 import store from './store';
+import UpdateProject from './web/components/project/UpdateProject';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Header />
           <Route exact path="/dashboard" component={Dashboard} />
           <Route exact path="/addProject" component={AddProject} />
+          <Route exact path="/updateProject/:id" component={UpdateProject} />
         </div>
       </Router>
     </Provider>

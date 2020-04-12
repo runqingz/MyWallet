@@ -7,14 +7,18 @@ import PropTypes from 'prop-types';
 
 import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
-import getProjects from '../actions/projectActions';
+import { getProjects } from '../actions/projectActions';
 
 class Dashboard extends React.Component {
   componentDidMount() {
+    // eslint-disable-next-line react/destructuring-assignment
     this.props.getProjects();
   }
 
   render() {
+    const { project } = this.props;
+    const { projects } = project;
+
     return (
       <div className="projects">
         <div className="container">
@@ -25,7 +29,9 @@ class Dashboard extends React.Component {
               <NewProjectButton />
               <br />
               <hr />
-              <ProjectItem />
+              {projects.map((projectIt) => (
+                <ProjectItem key={projectIt.id} project={projectIt} />
+              ))}
             </div>
           </div>
         </div>
