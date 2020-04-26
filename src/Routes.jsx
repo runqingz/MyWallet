@@ -11,6 +11,7 @@ import Home from './web/components/Home';
 import Dashboard from './web/components/Dashboard';
 import UserHeader from './web/components/layout/Header';
 import AddProject from './web/components/project/AddProject';
+import UpdateProject from './web/components/project/UpdateProject';
 
 // eslint-disable-next-line object-curly-newline
 const { Header, Content, Footer } = Layout;
@@ -28,6 +29,7 @@ function Routes() {
             <Route path="/" exact render={() => <Home />} />
             <Route path="/dashboard" exact render={() => <Dashboard />} />
             <Route path="/addProject" exact render={() => <AddProject />} />
+            <Route path="/updateProject/:id" exact render={() => <UpdateProject />} />
           </Switch>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2020 Created by Ant UED</Footer>
