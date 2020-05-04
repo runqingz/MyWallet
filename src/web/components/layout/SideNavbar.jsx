@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
 
 // icons taken from antd template
@@ -13,19 +13,20 @@ const { Sider } = Layout;
 
 function SideNavbar() {
   const [collapsed, setCollapsed] = useState(false);
+  const path = useLocation().pathname;
   return (
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
       <div className="logo" />
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
-        <Menu.Item key="1">
+      <Menu theme="dark" defaultSelectedKeys={[path]} mode="inline">
+        <Menu.Item key="/">
           <HomeOutlined />
           <Link to="/">Home</Link>
         </Menu.Item>
-        <Menu.Item key="2">
+        <Menu.Item key="/dashboard">
           <PieChartOutlined />
           <Link to="/dashboard">Dashboard</Link>
         </Menu.Item>
-        <Menu.Item key="3">
+        <Menu.Item key="/addProject">
           <AppstoreAddOutlined />
           <Link to="/addProject">Add Project</Link>
         </Menu.Item>

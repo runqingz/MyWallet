@@ -102,3 +102,7 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+
+.site-page-header-ghost-wrapper {
+  background-color: #f5f5f5;
+}

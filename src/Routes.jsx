@@ -5,11 +5,11 @@ import { Layout } from 'antd';
 
 // Component
 import SideNavbar from './web/components/layout/SideNavbar';
+import AntdHeader from './web/components/layout/AntdHeader';
 
 // Pages
 import Home from './web/components/Home';
 import Dashboard from './web/components/Dashboard';
-import UserHeader from './web/components/layout/Header';
 import AddProject from './web/components/project/AddProject';
 import UpdateProject from './web/components/project/UpdateProject';
 
@@ -22,14 +22,14 @@ function Routes() {
       <SideNavbar />
       <Layout className="site-layout-header">
         <Header className="header" style={{ padding: 0 }}>
-          <UserHeader />
+          <AntdHeader />
         </Header>
         <Content className="site-layout-content">
           <Switch>
-            <Route path="/" exact render={() => <Home />} />
-            <Route path="/dashboard" exact render={() => <Dashboard />} />
-            <Route path="/addProject" exact render={() => <AddProject />} />
-            <Route path="/updateProject/:id" exact render={() => <UpdateProject />} />
+            <Route exact path="/" render={() => <Home />} />
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/addProject" component={AddProject} />
+            <Route path="/updateProject/:id" component={UpdateProject} />
           </Switch>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2020 Created by Ant UED</Footer>
