@@ -26,10 +26,6 @@ function SideNavbar() {
           <PieChartOutlined />
           <Link to="/dashboard">Dashboard</Link>
         </Menu.Item>
-        <Menu.Item key="/addProject">
-          <AppstoreAddOutlined />
-          <Link to="/addProject">Add Project</Link>
-        </Menu.Item>
       </Menu>
     </Sider>
   );

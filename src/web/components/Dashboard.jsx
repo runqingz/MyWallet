@@ -4,6 +4,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { List } from 'antd';
 
 import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
@@ -21,17 +22,30 @@ class Dashboard extends React.Component {
 
     return (
       <div className="projects">
-        <div className="container">
+        <div className="container-lg">
           <div className="row">
-            <div className="col-md-12">
-              <h1 className="display-4 text-center">Projects</h1>
+            <div className="col-12">
               <br />
               <NewProjectButton />
               <br />
               <hr />
-              {projects.map((projectIt) => (
-                <ProjectItem key={projectIt.id} project={projectIt} />
-              ))}
+              <List
+                grid={{
+                  gutter: 16,
+                  xs: 1,
+                  sm: 2,
+                  md: 4,
+                  lg: 4,
+                  xl: 6,
+                  xxl: 3,
+                }}
+                dataSource={projects}
+                renderItem={(projectIt) => (
+                  <List.Item>
+                    <ProjectItem key={projectIt.id} project={projectIt} />
+                  </List.Item>
+                )}
+              />
             </div>
           </div>
         </div>
