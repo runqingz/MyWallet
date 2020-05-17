@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
   return (
-    <nav className="navbar navbar-expand-sm navbar-light bg-light mb-4">
+    <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{ height: '64px' }}>
       <div className="container">
         <a className="navbar-brand" href="Dashboard.html">
           Personal Management Tool
@@ -12,14 +12,6 @@ function Header() {
         </button>
 
         <div className="collapse navbar-collapse" id="mobile-nav">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <a className="nav-link" href="/dashboard">
-                Dashboard
-              </a>
-            </li>
-          </ul>
-
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
               <a className="nav-link " href="register.html">

@@ -1,154 +1,80 @@
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prefer-stateless-function */
-
 import React from 'react';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { connect } from 'react-redux';
+import {
+  Modal, Form, Input, DatePicker,
+} from 'antd';
 
-import { createProject } from '../../actions/projectActions';
-
-class AddProject extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      projectName: '',
-      projectIdentifier: '',
-      description: '',
-      startDate: '',
-      endDate: '',
-      errors: {},
-    };
-
-    this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  // TODO: Rework this to use componentDidUpdate
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      return {
-        projectName: prevState.projectName,
-        projectIdentifier: prevState.projectIdentifier,
-        description: prevState.description,
-        startDate: prevState.startDate,
-        endDate: prevState.endDate,
-        errors: nextProps.errors,
-      };
-    }
-    return null; // Triggers no change in the state
-  }
-
-  onChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
-  }
-
-  onSubmit(e) {
-    e.preventDefault();
-
-    const newProject = {
-      projectName: this.state.projectName,
-      projectIdentifier: this.state.projectIdentifier,
-      description: this.state.description,
-      startDate: this.state.startDate,
-      endDate: this.state.endDate,
-    };
-
-    this.props.createProject(newProject, this.props.history);
-  }
-
-  render() {
-    const { errors } = this.state;
-    return (
-      <div className="register">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-8 m-auto">
-              <h5 className="display-4 text-center">New Project</h5>
-              <hr />
-              <form onSubmit={this.onSubmit}>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className={classnames('form-control form-control-lg ',
-                      { 'is-invalid': errors.projectName })}
-                    placeholder="Project Name"
-                    name="projectName"
-                    value={this.state.projectName}
-                    onChange={this.onChange}
-                  />
-                  {errors.projectName && (
-                    <div className="invalid-feedback">{errors.projectName}</div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <input
-                    type="text"
-                    className={classnames('form-control form-control-lg ',
-                      { 'is-invalid': errors.projectIdentifier })}
-                    placeholder="Unique Project ID"
-                    name="projectIdentifier"
-                    value={this.state.projectIdentifier}
-                    onChange={this.onChange}
-                  />
-                  {errors.projectIdentifier && (
-                    <div className="invalid-feedback">{errors.projectIdentifier}</div>
-                  )}
-                </div>
-                <div className="form-group">
-                  <textarea
-                    className={classnames('form-control form-control-lg ',
-                      { 'is-invalid': errors.description })}
-                    placeholder="Project Description"
-                    name="description"
-                    value={this.state.description}
-                    onChange={this.onChange}
-                  />
-                  {errors.description && (
-                    <div className="invalid-feedback">{errors.description}</div>
-                  )}
-                </div>
-                <h6>Start Date</h6>
-                <div className="form-group">
-                  <input
-                    type="date"
-                    className="form-control form-control-lg"
-                    name="startDate"
-                    value={this.state.startDate}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <h6>Estimated End Date</h6>
-                <div className="form-group">
-                  <input
-                    type="date"
-                    className="form-control form-control-lg"
-                    name="endDate"
-                    value={this.state.endDate}
-                    onChange={this.onChange}
-                  />
-                </div>
-
-                <input type="submit" className="btn btn-primary btn-block mt-4" value="Submit" />
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-}
-
-AddProject.propTypes = {
-  createProject: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+const NewProjectForm = ({ visible, onCreate, onCancel }) => {
+  const [form] = Form.useForm();
+  return (
+    <Modal
+      visible={visible}
+      title="Add new project"
+      okText="Submit"
+      cancelText="Cancel"
+      onCancel={onCancel}
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCreate(values);
+          })
+          .catch((info) => {
+            console.log('Validate Failed:', info);
+          });
+      }}
+    >
+      <Form
+        form={form}
+        layout="vertical"
+        name="form_in_modal"
+        initialValues={{
+          modifier: 'public',
+        }}
+      >
+        <Form.Item
+          name="projectName"
+          label="Project Name"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the title of project!',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name="projectIdentifier"
+          label="Project ID"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the unique identifier of project!',
+            },
+            {
+              max: 5,
+              message: 'Please use no more than 5 character',
+            },
+          ]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item name="description" label="Description">
+          <Input type="textarea" />
+        </Form.Item>
+        <Form.Item name="startDate" label="Start Date">
+          <DatePicker />
+        </Form.Item>
+        <Form.Item name="endDate" label="End Date">
+          <DatePicker />
+        </Form.Item>
+      </Form>
+    </Modal>
+  );
 };
 
-const mapStateToProps = (state) => ({
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, { createProject })(AddProject);
+export default NewProjectForm;

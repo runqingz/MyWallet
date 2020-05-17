@@ -1,5 +1,5 @@
 import {
-  GET_PROJECTS, GET_PROJECT, CLEAR_CURRENT_PROJECT, DELETE_PROJECT,
+  GET_PROJECTS, GET_PROJECT, CLEAR_CURRENT_PROJECT, DELETE_PROJECT, CREATE_PROJECT,
 } from '../actions/types';
 
 const initialState = {
@@ -9,6 +9,11 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
+    case CREATE_PROJECT:
+      return {
+        ...state,
+        projects: [...state.projects, action.payload],
+      };
     case GET_PROJECTS:
       return {
         ...state,
