@@ -6,7 +6,6 @@ import { Layout, Menu } from 'antd';
 import {
   HomeOutlined,
   PieChartOutlined,
-  AppstoreAddOutlined,
 } from '@ant-design/icons';
 
 const { Sider } = Layout;

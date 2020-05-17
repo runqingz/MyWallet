@@ -2,7 +2,7 @@ import React from 'react';
 
 function Header() {
   return (
-    <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{height: '64px'}}>
+    <nav className="navbar navbar-expand-sm navbar-light bg-light" style={{ height: '64px' }}>
       <div className="container">
         <a className="navbar-brand" href="Dashboard.html">
           Personal Management Tool
