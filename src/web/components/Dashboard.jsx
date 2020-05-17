@@ -27,7 +27,6 @@ class Dashboard extends React.Component {
             <div className="col-12">
               <br />
               <NewProjectButton />
-              <br />
               <hr />
               <List
                 grid={{
