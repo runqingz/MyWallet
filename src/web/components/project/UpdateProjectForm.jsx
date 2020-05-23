@@ -6,13 +6,17 @@ import PropTypes from 'prop-types';
 import {
   Modal, Form, Input, DatePicker,
 } from 'antd';
+import moment from 'moment';
 
-const NewProjectForm = ({ visible, onCreate, onCancel }) => {
+const UpdateProjectForm = ({
+  visible, onUpdate, onCancel, project,
+}) => {
   const [form] = Form.useForm();
+  const dateFormat = 'YYYY-MM-DD';
   return (
     <Modal
       visible={visible}
-      title="Add new project"
+      title={`Update Project: ${project.projectName}`}
       okText="Submit"
       cancelText="Cancel"
       onCancel={onCancel}
@@ -21,7 +25,7 @@ const NewProjectForm = ({ visible, onCreate, onCancel }) => {
           .validateFields()
           .then((values) => {
             form.resetFields();
-            onCreate(values);
+            onUpdate(values);
           })
           .catch((info) => {
             console.log('Validate Failed:', info);
@@ -34,6 +38,11 @@ const NewProjectForm = ({ visible, onCreate, onCancel }) => {
         name="form_in_modal"
         initialValues={{
           modifier: 'public',
+          projectName: project.projectName,
+          projectIdentifier: project.projectIdentifier,
+          description: project.description,
+          startDate: moment(project.startDate, dateFormat),
+          endDate: moment(project.endDate, dateFormat),
         }}
       >
         <Form.Item
@@ -87,10 +96,11 @@ const NewProjectForm = ({ visible, onCreate, onCancel }) => {
   );
 };
 
-NewProjectForm.propTypes = {
+UpdateProjectForm.propTypes = {
   visible: PropTypes.bool.isRequired,
-  onCreate: PropTypes.func.isRequired,
+  onUpdate: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired,
 };
 
-export default NewProjectForm;
+export default UpdateProjectForm;

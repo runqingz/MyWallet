@@ -5,12 +5,12 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 const { confirm } = Modal;
 
 const DeleteProjectModal = ({
-  id, onOk, onCancel,
+  id, onOk,
 }) => {
   confirm({
-    title: 'Are you sure delete this task?',
+    title: 'Are you sure delete this project?',
     icon: <ExclamationCircleOutlined />,
-    content: 'Some descriptions',
+    content: 'All related tasks will be deleted',
     okText: 'Yes',
     okType: 'danger',
     cancelText: 'No',
@@ -18,7 +18,6 @@ const DeleteProjectModal = ({
       onOk(id);
     },
     onCancel() {
-      onCancel();
     },
   });
 };

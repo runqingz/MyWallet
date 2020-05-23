@@ -12,23 +12,26 @@ class NewProjectButton extends React.Component {
 
     this.state = {
       visible: false,
+      error: {},
     };
 
     this.onCreate = this.onCreate.bind(this);
   }
+  
+  delay = ms => new Promise(res => setTimeout(res, ms));
 
-  onCreate = values => {
-    console.log('Received values of form: ', values);
-    this.props.createProject(values);
+  onCreate = async values => {
     this.setState({visible: false});
-
-    if(!this.state.errors) {
-      message.success('Success!');
+    message.loading({ content: 'Loading...', key: 'addProject' });
+    const err = await this.props.createProject(values);
+    if (!err)
+    {
+      message.success({ content: 'Success', key: 'addProject' });
+    } else {
+      //console.log(err);
+      message.error(JSON.stringify(err));
     }
-    else {
-      //Display Error
-    }
-  };
+  }
 
   render(){
     return (

@@ -1,17 +1,20 @@
 import axios from 'axios';
 import {
-  GET_ERRORS, GET_PROJECTS, GET_PROJECT, CLEAR_CURRENT_PROJECT, DELETE_PROJECT, CREATE_PROJECT,
+  GET_ERRORS, GET_PROJECTS, GET_PROJECT, CLEAR_CURRENT_PROJECT,
+  DELETE_PROJECT, CREATE_PROJECT, UPDATE_PROJECT,
 } from './types';
 
-export const createProject = (project) => async (dispatch) => {
-  try {
-    dispatch({ type: GET_ERRORS, payload: {} });
-    const res = await axios.post('/api/project', project);
+export const createProject = (project) => async (dispatch) => axios.post('/api/project', project)
+  .then((res) => {
     dispatch({ type: CREATE_PROJECT, payload: res.data });
-  } catch (error) {
-    dispatch({ type: GET_ERRORS, payload: error.response.data });
-  }
-};
+  }).catch((error) => error.response.data);
+  // try {
+  //   dispatch({ type: GET_ERRORS, payload: {} });
+  //   const res = await axios.post('/api/project', project);
+  //   dispatch({ type: CREATE_PROJECT, payload: res.data });
+  // } catch (error) {
+  //   dispatch({ type: GET_ERRORS, payload: error.response.data });
+  // }
 
 export const getProjects = () => async (dispatch) => {
   dispatch({
@@ -38,4 +41,14 @@ export const deleteProject = (id) => async (dispatch) => {
     type: DELETE_PROJECT,
     payload: id,
   });
+};
+
+export const updateProject = (project) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_ERRORS, payload: {} });
+    const res = await axios.post('/api/project', project);
+    dispatch({ type: UPDATE_PROJECT, payload: res.data });
+  } catch (error) {
+    dispatch({ type: GET_ERRORS, payload: error.response.data });
+  }
 };
