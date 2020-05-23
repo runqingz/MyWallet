@@ -76,10 +76,28 @@ const NewProjectForm = ({ visible, onCreate, onCancel }) => {
         >
           <Input type="textarea" />
         </Form.Item>
-        <Form.Item name="startDate" label="Start Date">
+        <Form.Item
+          name="startDate"
+          label="Start Date"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the unique identifier of project!',
+            },
+          ]}
+        >
           <DatePicker />
         </Form.Item>
-        <Form.Item name="endDate" label="End Date">
+        <Form.Item
+          name="endDate"
+          label="End Date"
+          rules={[
+            {
+              required: true,
+              message: 'Please input the unique identifier of project!',
+            },
+          ]}
+        >
           <DatePicker />
         </Form.Item>
       </Form>

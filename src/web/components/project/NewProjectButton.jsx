@@ -19,12 +19,12 @@ class NewProjectButton extends React.Component {
 
   async onCreate(values) {
     this.setState({ visible: false });
-    message.loading({ content: 'In Progress...', key: 'addProject' });
+    message.loading({ content: 'In Progress...', key: 'addProject', duration: 0 });
     const err = await this.props.createProject(values);
     if (!err) {
       message.success({ content: 'Success', key: 'addProject' });
     } else {
-      message.error(JSON.stringify(err));
+      message.error({ content: JSON.stringify(err), key: 'addProject' });
     }
   }
 

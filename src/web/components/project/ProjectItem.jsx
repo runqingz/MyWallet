@@ -32,19 +32,25 @@ class ProjectItem extends Component {
     data.id = project.id;
 
     this.setState({ visible: false });
-    message.loading({ content: 'In Progress...', key: 'updateProject' });
+    message.loading({ content: 'In Progress...', key: 'updateProject', duration: 0 });
 
     const err = await this.props.updateProject(values);
     if (!err) {
       message.success({ content: 'Success', key: 'updateProject' });
     } else {
-      message.error(JSON.stringify(err));
+      message.error({ content: JSON.stringify(err), key: 'updateProject' });
     }
   }
 
-  onDelete(id) {
-    this.props.deleteProject(id);
-    message.success('Success!');
+  async onDelete(id) {
+    message.loading({ content: 'In Progress...', key: 'deleteProject', duration: 0 });
+
+    const err = await this.props.deleteProject(id);
+    if (!err) {
+      message.success({ content: 'Success', key: 'deleteProject' });
+    } else {
+      message.error({ content: JSON.stringify(err), key: 'deleteProject' });
+    }
   }
 
   render() {

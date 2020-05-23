@@ -4,16 +4,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { List } from 'antd';
+import { message, List } from 'antd';
 
 import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
 import { getProjects } from '../actions/projectActions';
 
 class Dashboard extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
     // eslint-disable-next-line react/destructuring-assignment
-    this.props.getProjects();
+    message.loading({ content: 'In Progress...', key: 'getAllProjects', duration: 0 });
+    const err = await this.props.getProjects();
+    if (err) {
+      message.error({ content: JSON.stringify(err), key: 'getAllProjects' });
+    } else {
+      message.loading({ content: 'In Progress...', key: 'getAllProjects', duration: 1 });
+    }
   }
 
   render() {
