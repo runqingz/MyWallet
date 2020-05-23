@@ -10,8 +10,6 @@ import AntdHeader from './web/components/layout/AntdHeader';
 // Pages
 import Home from './web/components/Home';
 import Dashboard from './web/components/Dashboard';
-import AddProject from './web/components/project/AddProject';
-import UpdateProject from './web/components/project/UpdateProject';
 
 // eslint-disable-next-line object-curly-newline
 const { Header, Content, Footer } = Layout;
@@ -28,8 +26,6 @@ function Routes() {
           <Switch>
             <Route exact path="/" render={() => <Home />} />
             <Route path="/dashboard" component={Dashboard} />
-            <Route path="/addProject" component={AddProject} />
-            <Route path="/updateProject/:id" component={UpdateProject} />
           </Switch>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2020 Created by Ant UED</Footer>

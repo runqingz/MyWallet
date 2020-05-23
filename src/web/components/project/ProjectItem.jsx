@@ -7,9 +7,9 @@ import { EditOutlined, EllipsisOutlined, DeleteOutlined } from '@ant-design/icon
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { deleteProject } from '../../actions/projectActions';
+import { deleteProject, updateProject } from '../../actions/projectActions';
 import DeleteProjectModal from './DeleteProjectModal';
-import { updateProject } from '../../actions/projectActions';
+
 import UpdateProjectForm from './UpdateProjectForm';
 
 const { Meta } = Card;
@@ -26,20 +26,21 @@ class ProjectItem extends Component {
     this.onUpdate = this.onUpdate.bind(this);
   }
 
-  onUpdate = values => {
+  async onUpdate(values) {
     const { project } = this.props;
-    values.id = project.id;
-    console.log('Received values of form: ', values);
-    this.props.updateProject(values);
-    this.setState({visible: false});
+    const data = values;
+    data.id = project.id;
 
-    if(!this.state.errors) {
-      message.success('Success!');
+    this.setState({ visible: false });
+    message.loading({ content: 'In Progress...', key: 'updateProject' });
+
+    const err = await this.props.updateProject(values);
+    if (!err) {
+      message.success({ content: 'Success', key: 'updateProject' });
+    } else {
+      message.error(JSON.stringify(err));
     }
-    else {
-      //Display Error
-    }
-  };
+  }
 
   onDelete(id) {
     this.props.deleteProject(id);
@@ -79,6 +80,7 @@ class ProjectItem extends Component {
 ProjectItem.propTypes = {
   project: PropTypes.object.isRequired,
   deleteProject: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
 };
 
 export default connect(null, { deleteProject, updateProject })(ProjectItem);

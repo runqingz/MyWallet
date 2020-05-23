@@ -24,7 +24,7 @@ const NewProjectForm = ({ visible, onCreate, onCancel }) => {
             onCreate(values);
           })
           .catch((info) => {
-            console.log('Validate Failed:', info);
+            // console.log('Validate Failed:', info);
           });
       }}
     >
