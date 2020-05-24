@@ -17,45 +17,43 @@ class NewProjectButton extends React.Component {
     this.onCreate = this.onCreate.bind(this);
   }
 
-  onCreate = values => {
-    console.log('Received values of form: ', values);
-    this.props.createProject(values);
-    this.setState({visible: false});
-
-    if(!this.state.errors) {
-      message.success('Success!');
+  async onCreate(values) {
+    this.setState({ visible: false });
+    message.loading({ content: 'In Progress...', key: 'addProject', duration: 0 });
+    const err = await this.props.createProject(values);
+    if (!err) {
+      message.success({ content: 'Success', key: 'addProject' });
+    } else {
+      message.error({ content: JSON.stringify(err), key: 'addProject' });
     }
-    else {
-      //Display Error
-    }
-  };
+  }
 
-  render(){
+  render() {
+    const { visible } = this.state;
     return (
       <div>
         <Button
           type="primary"
           onClick={() => {
-            this.setState({visible: true})
+            this.setState({ visible: true });
           }}
         >
           New Project
         </Button>
         <NewProjectForm
-          visible={this.state.visible}
+          visible={visible}
           onCreate={this.onCreate}
           onCancel={() => {
-            this.setState({visible: false})
+            this.setState({ visible: false });
           }}
         />
       </div>
     );
- }
-};
+  }
+}
 
 NewProjectButton.propTypes = {
   createProject: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
