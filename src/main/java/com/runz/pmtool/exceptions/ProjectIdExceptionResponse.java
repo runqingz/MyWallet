@@ -2,17 +2,17 @@ package com.runz.pmtool.exceptions;
 
 public class ProjectIdExceptionResponse {
 
-    private String projectIdentifier;
+    private String projectService;
 
-    public ProjectIdExceptionResponse(String projectIdentifier) {
-        this.projectIdentifier = projectIdentifier;
+    public ProjectIdExceptionResponse(String projectService) {
+        this.projectService = projectService;
     }
 
-    public String getProjectIdentifier() {
-        return this.projectIdentifier;
+    public String getProjectService() {
+        return this.projectService;
     }
 
-    public void setProjectIdentifier(String projectIdentifier) {
-        this.projectIdentifier = projectIdentifier;
+    public void setProjectService(String projectService) {
+        this.projectService = projectService;
     }
 }
