@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface TaskRepository extends CrudRepository<Task, Long>{
 
 	List<Task> findByProjectIdentifierOrderByPostDate(String id);
+
+	Task findByProjectSquence(String squence);
   
 }

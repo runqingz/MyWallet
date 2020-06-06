@@ -18,8 +18,9 @@ public class ProjectService {
     private BacklogRepository backlogRepository;
 
     public Project saveOrUpdateProject(Project project) {
+        String upperCaseIdentifier = project.getProjectIdentifier().toUpperCase();
+
         try {
-            String upperCaseIdentifier = project.getProjectIdentifier().toUpperCase();
             project.setProjectIdentifier(upperCaseIdentifier);
             if (project.getId() == 0L) {
                 Backlog backlog = new Backlog();
@@ -33,7 +34,7 @@ public class ProjectService {
 
             return projectRepository.save(project);
         } catch (Exception e) {
-            throw new ProjectIdException("Invalid Request");
+            throw new ProjectIdException("Project with ID: " + upperCaseIdentifier + " Already exists!");
         }
     }
 

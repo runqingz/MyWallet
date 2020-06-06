@@ -18,4 +18,18 @@ public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleBacklogException(BacklogException exception, WebRequest request) {
+        BacklogExceptionResponse exceptionResponse = new BacklogExceptionResponse(exception.getMessage());
+
+        return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    public final ResponseEntity<Object> handleTaskException(TaskException exception, WebRequest request) {
+        TaskExceptionResponse exceptionResponse = new TaskExceptionResponse(exception.getMessage());
+
+        return new ResponseEntity<Object>(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }
