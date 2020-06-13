@@ -1,7 +1,9 @@
 package com.runz.pmtool.services;
 
+import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Project;
 import com.runz.pmtool.exceptions.ProjectIdException;
+import com.runz.pmtool.repositories.BacklogRepository;
 import com.runz.pmtool.repositories.ProjectRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +14,27 @@ public class ProjectService {
 
     @Autowired
     private ProjectRepository projectRepository;
+    @Autowired
+    private BacklogRepository backlogRepository;
 
     public Project saveOrUpdateProject(Project project) {
+        String upperCaseIdentifier = project.getProjectIdentifier().toUpperCase();
+
         try {
-            project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            project.setProjectIdentifier(upperCaseIdentifier);
+            if (project.getId() == 0L) {
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(upperCaseIdentifier);
+            } else {
+                Backlog backlog = backlogRepository.findByProjectIdentifier(upperCaseIdentifier);
+                project.setBacklog(backlog);
+            }
+
             return projectRepository.save(project);
         } catch (Exception e) {
-            throw new ProjectIdException(
-                    "Project ID: " + project.getProjectIdentifier().toUpperCase() + ", Already exists");
+            throw new ProjectIdException("Project with ID: " + upperCaseIdentifier + " Already exists!");
         }
     }
 

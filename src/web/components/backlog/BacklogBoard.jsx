@@ -1,0 +1,216 @@
+/* eslint-disable react/forbid-prop-types */
+
+/* eslint-disable react/prefer-stateless-function */
+import React, { Component } from 'react';
+import {
+  Tabs, Table, Space, Button, message,
+} from 'antd';
+
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import {
+  getBacklogTasks, deleteTask, updateTask, getSumById,
+} from '../../actions/backlogActions';
+import { getProject } from '../../actions/projectActions';
+
+import '../../../App.css';
+import DeleteTaskModal from './DeleteTaskModal';
+import UpdateTaskFormModal from './UpdateTaskFormModal';
+import BacklogDescription from './BacklogDescription';
+
+class BacklogBoard extends Component {
+  constructor() {
+    super();
+    this.state = { visible: false, editingKey: -1 };
+    this.onDelete = this.onDelete.bind(this);
+    this.onUpdate = this.onUpdate.bind(this);
+  }
+
+  async componentDidMount() {
+    const { match: { params: { projectId } } } = this.props;
+    message.loading({ content: 'In Progress...', key: 'getBacklogBoardInfo', duration: 0 });
+
+    try {
+      // eslint-disable-next-line react/destructuring-assignment
+      await this.props.getProject(projectId);
+      // eslint-disable-next-line react/destructuring-assignment
+      await this.props.getBacklogTasks(projectId);
+      // eslint-disable-next-line react/destructuring-assignment
+      await this.props.getSumById(projectId);
+
+      message.success({ content: 'Success', key: 'getBacklogBoardInfo', duration: 1 });
+    } catch (error) {
+      message.error({ content: JSON.stringify(error.response.data), key: 'getBacklogBoardInfo' });
+    }
+  }
+
+  async componentDidUpdate() {
+    const { match: { params: { projectId } } } = this.props;
+
+    try {
+      await this.props.getSumById(projectId);
+    } catch (error) {
+      message.error({ content: JSON.stringify(error.response.data), key: 'updateStatistic' });
+    }
+  }
+
+  async onDelete(projectId, taskId) {
+    message.loading({ content: 'In Progress...', key: 'deleteProject', duration: 0 });
+    try {
+      await this.props.deleteTask(projectId, taskId);
+      message.success({ content: 'Success', key: 'deleteProject' });
+    } catch (error) {
+      message.error({ content: JSON.stringify(error.response.data), key: 'deleteProject' });
+    }
+  }
+
+  async onUpdate(values, id) {
+    const { match: { params: { projectId } } } = this.props;
+
+    this.setState({ visible: false, editingKey: -1 });
+    message.loading({ content: 'In Progress...', key: 'updateTask', duration: 0 });
+    try {
+      await this.props.updateTask({ ...values, id }, projectId);
+      message.success({ content: 'Success', key: 'updateTask' });
+    } catch (error) {
+      message.error({ content: JSON.stringify(error), key: 'updateTask' });
+    }
+  }
+
+  render() {
+    const { project } = this.props;
+    const { backlog: { tasks, sum } } = this.props;
+    const { TabPane } = Tabs;
+    const columns = [
+      {
+        title: 'Summary',
+        dataIndex: 'summary',
+        width: 150,
+      },
+      {
+        title: 'Value',
+        dataIndex: 'value',
+        width: 150,
+        render: (value) => {
+          const style = {
+            color: 'green',
+          };
+          if (value < 0) {
+            style.color = 'red';
+          }
+          return (
+            <span style={style}>{value}</span>
+          );
+        },
+      },
+      {
+        title: 'Status',
+        dataIndex: 'status',
+        width: 150,
+      },
+      {
+        title: 'Description',
+        dataIndex: 'description',
+      },
+      {
+        title: 'Post Date',
+        dataIndex: 'postDate',
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        render: (record) => {
+          const { visible, editingKey } = this.state;
+          const isEditing = editingKey === record.key;
+          return isEditing ? (
+            <Space size="middle">
+              {/* TODO: new components */}
+              <UpdateTaskFormModal
+                task={record}
+                visible={visible}
+                onUpdate={this.onUpdate}
+                onCancel={() => {
+                  this.setState({ visible: false, editingKey: -1 });
+                }}
+              />
+            </Space>
+          ) : (
+            <Space size="middle">
+              {/* TODO: new components */}
+              <Button
+                type="link"
+                size="small"
+                onClick={() => {
+                  this.setState({ visible: true, editingKey: record.key });
+                }}
+              >
+                Edit
+              </Button>
+              <Button type="link" size="small" onClick={() => { DeleteTaskModal({ projectId: record.projectIdentifier, taskId: record.projectSquence, onOk: this.onDelete }); }}>Delete</Button>
+            </Space>
+          );
+        },
+      },
+    ];
+    const data = tasks.map((item) => ({ ...item, key: item.id }));
+    return (
+      <div className="tasks">
+        <div className="container-lg">
+          <div className="row">
+            <div className="col-12">
+              <br />
+              <h3>Project Details</h3>
+              <hr />
+              <div className="card-container">
+                <Tabs defaultActiveKey="1" type="card">
+                  <TabPane tab="Description" key="1">
+                    <BacklogDescription project={project} grossValue={sum} />
+                  </TabPane>
+                  {/* <TabPane tab="Tab 2" key="2">
+                    Content of Tab Pane 2
+                  </TabPane>
+                  <TabPane tab="Tab 3" key="3">
+                    Content of Tab Pane 3
+                  </TabPane> */}
+                </Tabs>
+              </div>
+              <br />
+              <div style={{ marginBottom: 16 }}>
+                <Button type="primary" href={`/project/${project.projectIdentifier}/addtask`}>
+                  Add Task
+                </Button>
+              </div>
+              {/* TODO: Editable Row format */}
+              <Table
+                columns={columns}
+                dataSource={data}
+                scroll={{ y: 240 }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+BacklogBoard.propTypes = {
+  match: PropTypes.object.isRequired,
+  project: PropTypes.object.isRequired,
+  backlog: PropTypes.object.isRequired,
+  getProject: PropTypes.func.isRequired,
+  getBacklogTasks: PropTypes.func.isRequired,
+  getSumById: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
+  updateTask: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  project: state.project.project,
+  backlog: state.backlog,
+});
+
+export default connect(mapStateToProps, {
+  getBacklogTasks, getProject, deleteTask, updateTask, getSumById,
+})(BacklogBoard);

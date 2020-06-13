@@ -3,7 +3,7 @@
 /* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
 import { Card, message } from 'antd';
-import { EditOutlined, EllipsisOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -59,14 +59,14 @@ class ProjectItem extends Component {
       <div>
         <Card
           style={{ width: 300 }}
+          title={project.projectName}
           actions={[
             <EditOutlined key="edit" onClick={() => { this.setState({ visible: true }); }} />,
             <DeleteOutlined key="delete" onClick={() => { DeleteProjectModal({ id: project.projectIdentifier, onOk: this.onDelete }); }} />,
-            <EllipsisOutlined key="ellipsis" />,
           ]}
+          extra={<a href={`/project/${project.projectIdentifier}`}>Details</a>}
         >
           <Meta
-            title={project.projectName}
             description={project.description}
           />
         </Card>
