@@ -28,9 +28,9 @@ export const getProject = (id) => (dispatch) => axios.get(`/api/project/${id}`).
     type: GET_PROJECT,
     payload: res.data,
   });
-}).catch((error) => error.response.data);
+});
 
-export const deleteProject = (id) => (dispatch) => axios.delete(`/api/project/${id}`).then((res) => {
+export const deleteProject = (id) => (dispatch) => axios.delete(`/api/project/${id}`).then(() => {
   dispatch({
     type: DELETE_PROJECT,
     payload: id,

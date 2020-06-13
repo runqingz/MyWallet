@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
     if (err) {
       message.error({ content: JSON.stringify(err), key: 'getAllProjects' });
     } else {
-      message.loading({ content: 'In Progress...', key: 'getAllProjects', duration: 1 });
+      message.success({ content: 'Success', key: 'getAllProjects', duration: 1 });
     }
   }
 

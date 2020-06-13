@@ -69,4 +69,9 @@ public class BacklogController {
 
         return new ResponseEntity<String>("Task: " + projectSequence + " was deleted successfully", HttpStatus.OK);
     }
+
+    @GetMapping("/{backlog_id}/sum")
+    public double getBacklogGrossValue(@PathVariable String backlog_id) {
+        return taskService.sumTaskValueById(backlog_id);
+    }
 }

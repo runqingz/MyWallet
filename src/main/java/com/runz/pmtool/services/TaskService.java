@@ -81,5 +81,11 @@ public class TaskService {
 
         taskRepository.delete(task);
     }
+
+    public double sumTaskValueById(String backlog_id) {
+        double sum = taskRepository.getValueSumByProjectIdentifier(backlog_id);
+
+        return sum;
+    }
   
 }
