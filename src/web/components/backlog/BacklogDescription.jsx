@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 
 export default function BacklogDescription({ project, grossValue, postedGrossValue }) {
   const valueStyle = grossValue < 0 ? { color: 'red' } : { color: 'green' };
+  const postedValueStyle = postedGrossValue < 0 ? { color: 'red' } : { color: 'green' };
   return (
     <Descriptions
       bordered
@@ -35,7 +36,7 @@ export default function BacklogDescription({ project, grossValue, postedGrossVal
           <Statistic
             value={postedGrossValue}
             precision={2}
-            valueStyle={valueStyle}
+            valueStyle={postedValueStyle}
             prefix={(<div>$ </div>)}
           />
         </Tooltip>
