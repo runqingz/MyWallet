@@ -1,9 +1,9 @@
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
-import { Descriptions, Statistic } from 'antd';
+import { Descriptions, Statistic, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 
-export default function BacklogDescription({ project, grossValue }) {
+export default function BacklogDescription({ project, grossValue, postedGrossValue }) {
   const valueStyle = grossValue < 0 ? { color: 'red' } : { color: 'green' };
   return (
     <Descriptions
@@ -16,13 +16,29 @@ export default function BacklogDescription({ project, grossValue }) {
       <Descriptions.Item label="ID" span={2}>{project.projectIdentifier}</Descriptions.Item>
       <Descriptions.Item label="Created At">{project.createdAt}</Descriptions.Item>
       <Descriptions.Item label="Updated At" span={2}>{project.modifiedAt}</Descriptions.Item>
+      <Descriptions.Item label="Pending Value" span={3}>
+        <Tooltip placement="topLeft" title="This is the gross value after pending tasks">
+          <Statistic
+            value={grossValue}
+            precision={2}
+            valueStyle={valueStyle}
+            prefix={(
+              <div>
+                $
+              </div>
+          )}
+          />
+        </Tooltip>
+      </Descriptions.Item>
       <Descriptions.Item label="Gross Value" span={3}>
-        <Statistic
-          value={grossValue}
-          precision={2}
-          valueStyle={valueStyle}
-          prefix={<div>$</div>}
-        />
+        <Tooltip placement="topLeft" title="This is the gross value before pending tasks">
+          <Statistic
+            value={postedGrossValue}
+            precision={2}
+            valueStyle={valueStyle}
+            prefix={(<div>$ </div>)}
+          />
+        </Tooltip>
       </Descriptions.Item>
       <Descriptions.Item label="Description" span={3}>
         {project.description}
@@ -34,4 +50,5 @@ export default function BacklogDescription({ project, grossValue }) {
 BacklogDescription.propTypes = {
   project: PropTypes.object.isRequired,
   grossValue: PropTypes.number.isRequired,
+  postedGrossValue: PropTypes.number.isRequired,
 };

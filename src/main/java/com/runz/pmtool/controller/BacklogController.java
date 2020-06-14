@@ -3,8 +3,8 @@ package com.runz.pmtool.controller;
 import javax.validation.Valid;
 
 import com.runz.pmtool.domain.Task;
+import com.runz.pmtool.domain.TaskStatus;
 import com.runz.pmtool.services.MapValidationService;
-import com.runz.pmtool.services.ProjectService;
 import com.runz.pmtool.services.TaskService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -71,7 +72,7 @@ public class BacklogController {
     }
 
     @GetMapping("/{backlog_id}/sum")
-    public double getBacklogGrossValue(@PathVariable String backlog_id) {
-        return taskService.sumTaskValueById(backlog_id);
+    public double getBacklogGrossValue(@PathVariable String backlog_id, @RequestParam(required = false) TaskStatus status) {
+        return taskService.sumTaskValueById(backlog_id, status);
     }
 }

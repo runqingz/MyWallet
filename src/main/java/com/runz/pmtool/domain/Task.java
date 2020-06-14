@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,7 +37,10 @@ public class Task {
     
     private String description;
     private double value;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date postDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -102,11 +107,11 @@ public class Task {
         this.value = value;
     }
 
-    public String getStatus() {
+    public TaskStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TaskStatus status) {
         this.status = status;
     }
 

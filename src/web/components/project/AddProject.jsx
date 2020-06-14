@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
-  Modal, Form, Input, DatePicker,
+  Modal, Form, Input,
 } from 'antd';
 
 const NewProjectForm = ({ visible, onCreate, onCancel }) => {
@@ -75,30 +75,6 @@ const NewProjectForm = ({ visible, onCreate, onCancel }) => {
           ]}
         >
           <Input type="textarea" />
-        </Form.Item>
-        <Form.Item
-          name="startDate"
-          label="Start Date"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the unique identifier of project!',
-            },
-          ]}
-        >
-          <DatePicker />
-        </Form.Item>
-        <Form.Item
-          name="endDate"
-          label="End Date"
-          rules={[
-            {
-              required: true,
-              message: 'Please input the unique identifier of project!',
-            },
-          ]}
-        >
-          <DatePicker />
         </Form.Item>
       </Form>
     </Modal>

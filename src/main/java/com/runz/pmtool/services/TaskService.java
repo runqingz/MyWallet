@@ -3,6 +3,7 @@ package com.runz.pmtool.services;
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Project;
 import com.runz.pmtool.domain.Task;
+import com.runz.pmtool.domain.TaskStatus;
 import com.runz.pmtool.exceptions.BacklogException;
 import com.runz.pmtool.exceptions.TaskException;
 import com.runz.pmtool.repositories.BacklogRepository;
@@ -32,8 +33,8 @@ public class TaskService {
             task.setProjectSquence(projectIdentifier + "-" + sequence);
             backlog.setTaskSequence(sequence);
             task.setProjectIdentifier(projectIdentifier);
-            if(task.getStatus() == "" || task.getStatus() == null) {
-                task.setStatus("Pending");
+            if(task.getStatus() == null) {
+                task.setStatus(TaskStatus.POSTED);
             }
         } catch (Exception e) {
             throw new BacklogException("Cannot find backlog of project of ID: " + projectIdentifier.toUpperCase());
@@ -82,10 +83,12 @@ public class TaskService {
         taskRepository.delete(task);
     }
 
-    public double sumTaskValueById(String backlog_id) {
-        double sum = taskRepository.getValueSumByProjectIdentifier(backlog_id);
+    public double sumTaskValueById(String backlog_id, TaskStatus status) {
+        if (status == null) {
+            return taskRepository.getValueSumByProjectIdentifier(backlog_id);
+        }
 
-        return sum;
+        return taskRepository.getTypedValueSumByProjectIdentifier(backlog_id, status);
     }
   
 }
