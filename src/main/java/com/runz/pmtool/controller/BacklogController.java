@@ -1,5 +1,7 @@
 package com.runz.pmtool.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import com.runz.pmtool.domain.Task;
@@ -44,7 +46,7 @@ public class BacklogController {
     }
 
     @GetMapping("/{backlog_id}")
-    public Iterable<Task> getBacklogTasks(@PathVariable String backlog_id) {
+    public List<Task> getBacklogTasks(@PathVariable String backlog_id) {
         return taskService.findAllTasksById(backlog_id);
     }
 

@@ -1,5 +1,7 @@
 package com.runz.pmtool.services;
 
+import java.util.List;
+
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Project;
 import com.runz.pmtool.domain.Task;
@@ -43,7 +45,7 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
-    public Iterable<Task> findAllTasksById(String backlog_id) {
+    public List<Task> findAllTasksById(String backlog_id) {
         Project project = projectRepository.findByProjectIdentifier(backlog_id);
 
         if (project == null) {
@@ -84,6 +86,9 @@ public class TaskService {
     }
 
     public double sumTaskValueById(String backlog_id, TaskStatus status) {
+        List<Task> tasks = findAllTasksById(backlog_id);
+
+        if (tasks.isEmpty()) return 0;
         if (status == null) {
             return taskRepository.getValueSumByProjectIdentifier(backlog_id);
         }

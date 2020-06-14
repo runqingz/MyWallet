@@ -23,7 +23,7 @@ class BacklogBoard extends Component {
   constructor() {
     super();
     this.state = {
-      visible: false, editingKey: -1, isLoading: true, isTaskUpdating: false,
+      editingKey: -1, isLoading: true, isTaskUpdating: false,
     };
     this.onDelete = this.onDelete.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
@@ -49,25 +49,16 @@ class BacklogBoard extends Component {
     }
   }
 
-  async componentDidUpdate() {
-    const { match: { params: { projectId } } } = this.props;
-
-    try {
-      await this.props.getSumById(projectId);
-      await this.props.getPostedSumById(projectId);
-    } catch (error) {
-      message.error({ content: JSON.stringify(error.response.data), key: 'updateStatistic' });
-    }
-  }
-
   async onDelete(projectId, taskId) {
     message.loading({ content: 'In Progress...', key: 'deleteProject', duration: 0 });
     try {
+      this.setState({ isTaskUpdating: true });
       await this.props.deleteTask(projectId, taskId);
       message.success({ content: 'Success', key: 'deleteProject' });
     } catch (error) {
       message.error({ content: JSON.stringify(error.response.data), key: 'deleteProject' });
     }
+    this.setState({ editingKey: -1, isTaskUpdating: false });
   }
 
   async onUpdate(values, id) {
@@ -76,11 +67,13 @@ class BacklogBoard extends Component {
     try {
       this.setState({ isTaskUpdating: true });
       await this.props.updateTask({ ...values, id }, projectId);
+      await this.props.getSumById(projectId);
+      await this.props.getPostedSumById(projectId);
       message.success({ content: 'Success', key: 'updateTask' });
     } catch (error) {
       message.error({ content: JSON.stringify(error), key: 'updateTask' });
     }
-    this.setState({ visible: false, editingKey: -1, isTaskUpdating: false });
+    this.setState({ editingKey: -1, isTaskUpdating: false });
   }
 
   render() {
@@ -126,16 +119,15 @@ class BacklogBoard extends Component {
         title: 'Action',
         key: 'action',
         render: (record) => {
-          const { visible, editingKey } = this.state;
+          const { editingKey } = this.state;
           const isEditing = editingKey === record.key;
           return isEditing ? (
             <Space size="middle">
               <UpdateTaskFormModal
                 task={record}
-                visible={visible}
                 onUpdate={this.onUpdate}
                 onCancel={() => {
-                  this.setState({ visible: false, editingKey: -1 });
+                  this.setState({ editingKey: -1 });
                 }}
                 isUpdating={isTaskUpdating}
               />
@@ -146,7 +138,7 @@ class BacklogBoard extends Component {
                 type="link"
                 size="small"
                 onClick={() => {
-                  this.setState({ visible: true, editingKey: record.key });
+                  this.setState({ editingKey: record.key });
                 }}
               >
                 Edit
@@ -195,7 +187,7 @@ class BacklogBoard extends Component {
                 </Button>
               </div>
               {/* TODO: Editable Row format, pagination */}
-              <Spin spinning={isLoading}>
+              <Spin spinning={isLoading || isTaskUpdating}>
                 <Table
                   columns={columns}
                   dataSource={pending}
@@ -204,7 +196,7 @@ class BacklogBoard extends Component {
                 />
               </Spin>
               <br />
-              <Spin spinning={isLoading}>
+              <Spin spinning={isLoading || isTaskUpdating}>
                 <Table
                   columns={columns}
                   dataSource={posted}

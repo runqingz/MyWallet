@@ -9,7 +9,7 @@ import {
 import moment from 'moment';
 
 const UpdateTaskFormModal = ({
-  task, visible, onUpdate, onCancel, isUpdating,
+  task, onUpdate, onCancel, isUpdating,
 }) => {
   const { Option } = Select;
   const { TextArea } = Input;
@@ -17,7 +17,7 @@ const UpdateTaskFormModal = ({
   const [form] = Form.useForm();
   return (
     <Modal
-      visible={visible}
+      visible
       title="Edit Task"
       okText="Submit"
       cancelText="Cancel"
