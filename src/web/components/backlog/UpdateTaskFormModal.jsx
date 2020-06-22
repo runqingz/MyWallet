@@ -9,20 +9,21 @@ import {
 import moment from 'moment';
 
 const UpdateTaskFormModal = ({
-  task, visible, onUpdate, onCancel,
+  task, onUpdate, onCancel, isUpdating,
 }) => {
   const { Option } = Select;
   const { TextArea } = Input;
   const dateFormat = 'YYYY-MM-DD';
   const [form] = Form.useForm();
-
   return (
     <Modal
-      visible={visible}
+      visible
       title="Edit Task"
       okText="Submit"
       cancelText="Cancel"
       onCancel={onCancel}
+      confirmLoading={isUpdating}
+      cancelButtonProps={{ disabled: isUpdating }}
       onOk={() => {
         form
           .validateFields()
@@ -66,8 +67,8 @@ const UpdateTaskFormModal = ({
             allowClear
             style={{ width: '150px' }}
           >
-            <Option value="Pending">Pending</Option>
-            <Option value="Posted">Posted</Option>
+            <Option value="PENDING">Pending</Option>
+            <Option value="POSTED">Posted</Option>
           </Select>
         </Form.Item>
         <Form.Item
@@ -110,6 +111,7 @@ UpdateTaskFormModal.propTypes = {
   onUpdate: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
+  isUpdating: PropTypes.bool.isRequired,
 };
 
 export default UpdateTaskFormModal;

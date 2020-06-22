@@ -71,8 +71,8 @@ class AddTaskForm extends Component {
                       allowClear
                       style={{ width: '150px' }}
                     >
-                      <Option value="Pending">Pending</Option>
-                      <Option value="Posted">Posted</Option>
+                      <Option value="PENDING">Pending</Option>
+                      <Option value="POSTED">Posted</Option>
                     </Select>
                   </Form.Item>
                   <Form.Item
