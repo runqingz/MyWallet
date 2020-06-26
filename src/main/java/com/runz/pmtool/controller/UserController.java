@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import com.runz.pmtool.domain.User;
 import com.runz.pmtool.services.MapValidationService;
 import com.runz.pmtool.services.UserService;
+import com.runz.pmtool.validator.UserValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +28,12 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserValidator userValidator;
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@Valid @RequestBody User user, BindingResult result) {
-        //TODO: Validate passwork match
+        userValidator.validate(user, result);
 
         ResponseEntity<?> errorMap = validationService.validateMap(result);
         if (errorMap != null) return errorMap;

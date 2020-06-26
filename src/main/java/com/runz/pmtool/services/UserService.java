@@ -1,6 +1,7 @@
 package com.runz.pmtool.services;
 
 import com.runz.pmtool.domain.User;
+import com.runz.pmtool.exceptions.UserException;
 import com.runz.pmtool.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,14 @@ public class UserService {
 
     public User saveUser(User newUser) {
         newUser.setPassword(bCryptPasswordEncoder.encode(newUser.getPassword()));
+        newUser.setConfirmPassword(bCryptPasswordEncoder.encode(newUser.getConfirmPassword()));
 
         //User name has to be unique (exception), password and confirm passwork match, never persist and show confirm password
-        return userRepository.save(newUser);
+        try {
+            return userRepository.save(newUser);
+        } catch (Exception e) {
+            throw new UserException("User name: " + newUser.getUsername() + " already exists!");
+        }
     }
 
 }
