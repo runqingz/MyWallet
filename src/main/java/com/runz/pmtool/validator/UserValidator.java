@@ -16,14 +16,13 @@ public class UserValidator implements Validator {
 
     @Override
     public void validate(Object target, Errors errors) {
-        
-        User user = (User) target;
+        User user = (User)target;
 
         if(user.getPassword().length() < 6) {
             errors.rejectValue("password", "Length", "Password must contain at least 6 characters");
         }
-
-        if(user.getPassword() != user.getConfirmPassword()) {
+        
+        if(!user.getPassword().equals(user.getConfirmPassword())) {
             errors.rejectValue("confirmPassword", "PassMatch", "Passwords must match");
         }
     }

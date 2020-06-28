@@ -4,7 +4,7 @@ import javax.validation.constraints.NotBlank;
 
 public class LoginRequest {
 
-    @NotBlank(message = "user name cannot be blank")
+    @NotBlank(message = "username is required")
     private String username;
     @NotBlank(message = "password is required")
     private String password;
