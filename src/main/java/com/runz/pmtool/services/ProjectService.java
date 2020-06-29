@@ -2,9 +2,11 @@ package com.runz.pmtool.services;
 
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Project;
+import com.runz.pmtool.domain.User;
 import com.runz.pmtool.exceptions.ProjectIdException;
 import com.runz.pmtool.repositories.BacklogRepository;
 import com.runz.pmtool.repositories.ProjectRepository;
+import com.runz.pmtool.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,11 +18,17 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     @Autowired
     private BacklogRepository backlogRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public Project saveOrUpdateProject(Project project) {
+    public Project saveOrUpdateProject(Project project, String username) {
         String upperCaseIdentifier = project.getProjectIdentifier().toUpperCase();
 
         try {
+            User user = userRepository.findByUsername(username);
+
+            project.setUser(user);
+            project.setCreator(user.getUsername());
             project.setProjectIdentifier(upperCaseIdentifier);
             if (project.getId() == 0L) {
                 Backlog backlog = new Backlog();

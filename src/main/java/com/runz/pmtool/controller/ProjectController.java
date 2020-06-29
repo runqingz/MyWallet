@@ -1,5 +1,7 @@
 package com.runz.pmtool.controller;
 
+import java.security.Principal;
+
 import javax.validation.Valid;
 
 import com.runz.pmtool.domain.Project;
@@ -31,14 +33,14 @@ public class ProjectController {
     private MapValidationService mapValidationService;
 
     @PostMapping("")
-    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result) {
+    public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal) {
 
         ResponseEntity<?> errorMap = mapValidationService.validateMap(result);
 
         if (errorMap != null)
             return errorMap;
 
-        Project project1 = projectService.saveOrUpdateProject(project);
+        Project project1 = projectService.saveOrUpdateProject(project, principal.getName());
         return new ResponseEntity<Project>(project1, HttpStatus.CREATED);
     }
 
