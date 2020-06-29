@@ -1,7 +1,6 @@
 package com.runz.pmtool.security;
 
 import java.io.IOException;
-import java.util.Collection;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

@@ -1,27 +1,17 @@
 package com.runz.pmtool.exceptions;
 
 public class InvalidLoginResponse {
-    private String username;
-    private String password;
+    private String message;
 
-    public InvalidLoginResponse() {
-        this.username = "Invalid username";
-        this.password = "Invalid password";
+    public InvalidLoginResponse(String msg) {
+        this.message = msg;
     }
 
-    public String getUsername() {
-        return username;
+    public String getMessage() {
+        return message;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setMessage(String message) {
+        this.message = message;
     }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }    
 }
