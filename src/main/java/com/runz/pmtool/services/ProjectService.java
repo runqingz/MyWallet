@@ -31,7 +31,7 @@ public class ProjectService {
 
             if(currentProject.isPresent() && !currentProject.get().getUser().getUsername().equals(username)) {
                 throw new ProjectIdException("Project does not exist in your account");
-            } else if (currentProject.isEmpty()) {
+            } else if (!currentProject.isPresent()) {
                 throw new ProjectIdException("Bad update request (project not found)");
             }
         }
