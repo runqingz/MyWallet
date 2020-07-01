@@ -1,5 +1,7 @@
 package com.runz.pmtool.services;
 
+import java.util.Optional;
+
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Project;
 import com.runz.pmtool.domain.User;
@@ -24,14 +26,26 @@ public class ProjectService {
     public Project saveOrUpdateProject(Project project, String username) {
         String upperCaseIdentifier = project.getProjectIdentifier().toUpperCase();
 
+        if(project.getId() != 0L) {
+            Optional<Project> currentProject = projectRepository.findById(project.getId());
+
+            if(currentProject.isPresent() && !currentProject.get().getUser().getUsername().equals(username)) {
+                throw new ProjectIdException("Project does not exist in your account");
+            } else if (currentProject.isEmpty()) {
+                throw new ProjectIdException("Bad update request (project not found)");
+            }
+        }
+
         try {
             User user = userRepository.findByUsername(username);
 
             project.setUser(user);
             project.setCreator(user.getUsername());
             project.setProjectIdentifier(upperCaseIdentifier);
-            if (project.getId() == 0L) {
+
+            if (project.getId() == 0L) {                        
                 Backlog backlog = new Backlog();
+
                 project.setBacklog(backlog);
                 backlog.setProject(project);
                 backlog.setProjectIdentifier(upperCaseIdentifier);
