@@ -3,7 +3,6 @@ package com.runz.pmtool.services;
 import java.util.List;
 
 import com.runz.pmtool.domain.Backlog;
-import com.runz.pmtool.domain.Project;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.TaskStatus;
 import com.runz.pmtool.exceptions.BacklogException;
@@ -39,13 +38,15 @@ public class TaskService {
     }
 
     public List<Task> findAllTasksById(String backlog_id, String username) {
-        Project project = projectService.findByProjectIdentifier(backlog_id, username);
-
-        if (project == null) {
-            throw new BacklogException("Project with ID: " + backlog_id.toUpperCase() + " does not exist!");
-        }
+        projectService.findByProjectIdentifier(backlog_id, username);
 
         return taskRepository.findByProjectIdentifierOrderByPostDate(backlog_id);
+    }
+
+    public List<Task> findAllTasksByIdAndStatus(String backlog_id, TaskStatus status, String username) {
+        projectService.findByProjectIdentifier(backlog_id, username);
+
+        return taskRepository.findByProjectIdentifierAndStatus(backlog_id, status);
     }
 
     public Task findTaskByProjectSequence(String backlog_id, String sequnce, String username) {
@@ -79,8 +80,7 @@ public class TaskService {
     }
 
     public Double sumTaskValueById(String backlog_id, TaskStatus status, String username) {
-        //TODO: if status present then find task by id by status
-        List<Task> tasks = findAllTasksById(backlog_id, username);
+        List<Task> tasks = status == null ? findAllTasksById(backlog_id, username) : findAllTasksByIdAndStatus(backlog_id, status, username);
 
         return tasks.stream().reduce(0.0, (partialValueSum, task) -> partialValueSum + task.getValue(), Double::sum);
     }
