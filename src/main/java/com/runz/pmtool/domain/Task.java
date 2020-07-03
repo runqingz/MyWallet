@@ -36,7 +36,7 @@ public class Task {
     private String summary;
     
     private String description;
-    private double value;
+    private Double value;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
@@ -99,11 +99,11 @@ public class Task {
         this.description = description;
     }
 
-    public double getValue() {
+    public Double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(Double value) {
         this.value = value;
     }
 
