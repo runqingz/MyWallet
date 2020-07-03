@@ -80,6 +80,7 @@ public class TaskService {
     }
 
     public Double sumTaskValueById(String backlog_id, TaskStatus status, String username) {
+        //Not sure the performance of doing this vs using aggragation querys (But this requires task to store user info/ join tables)
         List<Task> tasks = status == null ? findAllTasksById(backlog_id, username) : findAllTasksByIdAndStatus(backlog_id, status, username);
 
         return tasks.stream().reduce(0.0, (partialValueSum, task) -> partialValueSum + task.getValue(), Double::sum);
