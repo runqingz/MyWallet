@@ -21,5 +21,8 @@ mvn spring-boot:run
 
 ### React Client
 ```shell
-mvn spring-boot:run
+npm start
 ```
+
+### UI powered by:
+[Ant Design](https://ant.design/)
