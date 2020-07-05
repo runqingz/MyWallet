@@ -13,6 +13,7 @@ import Dashboard from './web/components/Dashboard';
 import BacklogBoard from './web/components/backlog/BacklogBoard';
 import AddTaskForm from './web/components/backlog/AddTaskForm';
 import ProtectedComponet from './web/components/security/ProtectedComponet';
+import UserLogin from './web/components/user/UserLogin';
 
 
 // eslint-disable-next-line object-curly-newline
@@ -29,9 +30,9 @@ function Routes() {
           <AntdHeader />
         </Header>
         )}
-        <Content className="site-layout-content">
+        <Content className="d-flex site-layout-content">
           <Switch>
-            <Route exact path="/login" render={() => <Home />} />
+            <Route exact path="/login" render={() => <UserLogin />} />
             <Route exact path="/" render={() => <ProtectedComponet authenticated={authenticated} component={Home} />} />
             <Route exact path="/dashboard" render={() => <ProtectedComponet authenticated={authenticated} component={Dashboard} />} />
             <Route exact path="/project/:projectId" render={() => <ProtectedComponet authenticated={authenticated} component={BacklogBoard} />} />
