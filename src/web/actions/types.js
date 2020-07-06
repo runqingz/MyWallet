@@ -17,3 +17,9 @@ export const GET_SUM = 'GET_SUM';
 export const GET_POSTED_SUM = 'GET_POSTED_SUM';
 export const DELETE_TASK = 'DELETE_TASK';
 export const UPDATE_TASK = 'UPDATE_TASK';
+
+// Security Action Types
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
+export const UNAUTHORIZED_ERROR = 'UNAUTHORIZE_ERROR';
