@@ -53,6 +53,10 @@ class ProjectItem extends Component {
     }
   }
 
+  onDetailClicked(url) {
+    this.props.history.push(url);
+  }
+
   render() {
     const { project } = this.props;
     return (
@@ -87,6 +91,7 @@ ProjectItem.propTypes = {
   project: PropTypes.object.isRequired,
   deleteProject: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 export default connect(null, { deleteProject, updateProject })(ProjectItem);

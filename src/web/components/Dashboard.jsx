@@ -9,6 +9,7 @@ import { message, List } from 'antd';
 import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
 import { getProjects } from '../actions/projectActions';
+import { handleAuthenticationError } from '../actions/securityActions';
 
 class Dashboard extends React.Component {
   async componentDidMount() {
@@ -16,14 +17,15 @@ class Dashboard extends React.Component {
     message.loading({ content: 'In Progress...', key: 'getAllProjects', duration: 0 });
     const err = await this.props.getProjects();
     if (err) {
-      message.error({ content: JSON.stringify(err), key: 'getAllProjects' });
+      message.error({ content: JSON.stringify(err.response.data), key: 'getAllProjects' });
+      if (err.response.status === 401) this.props.handleAuthenticationError();
     } else {
       message.success({ content: 'Success', key: 'getAllProjects', duration: 1 });
     }
   }
 
   render() {
-    const { project } = this.props;
+    const { project, history } = this.props;
     const { projects } = project;
 
     return (
@@ -47,7 +49,7 @@ class Dashboard extends React.Component {
                 dataSource={projects}
                 renderItem={(projectIt) => (
                   <List.Item>
-                    <ProjectItem key={projectIt.id} project={projectIt} />
+                    <ProjectItem project={projectIt} history={history} />
                   </List.Item>
                 )}
               />
@@ -62,10 +64,12 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   project: PropTypes.object.isRequired,
   getProjects: PropTypes.func.isRequired,
+  handleAuthenticationError: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   project: state.project,
 });
 
-export default connect(mapStateToProps, { getProjects })(Dashboard);
+export default connect(mapStateToProps, { getProjects, handleAuthenticationError })(Dashboard);

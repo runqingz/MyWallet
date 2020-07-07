@@ -13,6 +13,7 @@ import {
   getBacklogTasks, deleteTask, updateTask, getSumById, getPostedSumById,
 } from '../../actions/backlogActions';
 import { getProject } from '../../actions/projectActions';
+import { handleAuthenticationError } from '../../actions/securityActions';
 
 import '../../../App.css';
 import DeleteTaskModal from './DeleteTaskModal';
@@ -46,6 +47,7 @@ class BacklogBoard extends Component {
       this.setState({ isLoading: false });
     } catch (error) {
       message.error({ content: JSON.stringify(error.response.data), key: 'getBacklogBoardInfo' });
+      if (error.response.status === 401) this.props.handleAuthenticationError();
     }
   }
 
@@ -222,6 +224,7 @@ BacklogBoard.propTypes = {
   getPostedSumById: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired,
   updateTask: PropTypes.func.isRequired,
+  handleAuthenticationError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -230,5 +233,11 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-  getBacklogTasks, getProject, deleteTask, updateTask, getSumById, getPostedSumById,
+  getBacklogTasks,
+  getProject,
+  deleteTask,
+  updateTask,
+  getSumById,
+  getPostedSumById,
+  handleAuthenticationError,
 })(BacklogBoard);

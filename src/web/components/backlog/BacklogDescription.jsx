@@ -9,9 +9,6 @@ export default function BacklogDescription({ project, grossValue, postedGrossVal
   return (
     <Descriptions
       bordered
-      column={{
-        xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1,
-      }}
     >
       <Descriptions.Item label="Project">{project.projectName}</Descriptions.Item>
       <Descriptions.Item label="ID" span={2}>{project.projectIdentifier}</Descriptions.Item>

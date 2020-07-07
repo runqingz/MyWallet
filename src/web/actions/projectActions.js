@@ -14,7 +14,7 @@ export const getProjects = () => (dispatch) => axios.get('/api/project/all').the
     type: GET_PROJECTS,
     payload: res.data,
   });
-}).catch((error) => error.response.data);
+}).catch((error) => error);
 
 export const getProject = (id) => (dispatch) => axios.get(`/api/project/${id}`).then((res) => {
   dispatch({

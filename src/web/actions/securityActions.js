@@ -6,7 +6,6 @@ import { LOGIN, AUTHENTICATION_ERROR, UNAUTHORIZED_ERROR } from './types';
 export const userLogin = (loginRequestBody) => (dispatch) => axios.post('api/user/login', loginRequestBody)
   .then((res) => {
     const { token } = res.data;
-    //localStorage.setItem('jwtToken', token);
     setJWTToken(token);
 
     const decodedBody = { ...jwtDecode(token), token };

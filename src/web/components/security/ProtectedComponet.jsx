@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 
 export default function ProtectedComponet(props) {
@@ -10,6 +10,6 @@ export default function ProtectedComponet(props) {
     );
   }
   return (
-    component
+    <Component component={component} />
   );
 }
