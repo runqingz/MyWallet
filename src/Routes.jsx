@@ -27,7 +27,7 @@ const { Header, Content, Footer } = Layout;
 class Routes extends Component {
   render() {
     const { authenticated } = this.props;
-    const { user: { token }} = this.props;
+    const { user: { token } } = this.props;
     setJWTToken(token);
     return (
       <Layout className="site-layout" style={{ minHeight: '100vh' }}>
@@ -53,6 +53,11 @@ class Routes extends Component {
     );
   }
 }
+
+Routes.propTypes = {
+  authenticated: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => ({
   user: state.authentication.user,
