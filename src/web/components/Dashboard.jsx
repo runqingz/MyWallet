@@ -10,15 +10,24 @@ import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
 import { getProjects } from '../actions/projectActions';
 import { handleAuthenticationError } from '../actions/securityActions';
+import UnauthenticatedModal from './security/SecurityModal';
 
 class Dashboard extends React.Component {
   async componentDidMount() {
     // eslint-disable-next-line react/destructuring-assignment
-    message.loading({ content: 'In Progress...', key: 'getAllProjects', duration: 0 });
+    message.loading({ content: 'Loading Projects', key: 'getAllProjects', duration: 0 });
     const err = await this.props.getProjects();
+
     if (err) {
-      message.error({ content: JSON.stringify(err.response.data), key: 'getAllProjects' });
-      if (err.response.status === 401) this.props.handleAuthenticationError();
+      if (err.response.status === 401) {
+        message.error({ content: 'Loading Projects', key: 'getAllProjects', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(err.response.data), key: 'getAllProjects', duration: 1 });
+      }
     } else {
       message.success({ content: 'Success', key: 'getAllProjects', duration: 1 });
     }
