@@ -7,7 +7,7 @@ import {
 export const createProject = (project) => (dispatch) => axios.post('/api/project', project)
   .then((res) => {
     dispatch({ type: CREATE_PROJECT, payload: res.data });
-  }).catch((error) => error.response.data);
+  }).catch((error) => error.response);
 
 export const getProjects = () => (dispatch) => axios.get('/api/project/all').then((res) => {
   dispatch({
