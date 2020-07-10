@@ -18,17 +18,28 @@ import BacklogBoard from './web/components/backlog/BacklogBoard';
 import AddTaskForm from './web/components/backlog/AddTaskForm';
 import UserLoginForm from './web/components/user/UserLoginForm';
 
-import { setJWTToken } from './web/securityUtils/JWTUtils';
+import { setJWTToken, validateJWTToken } from './web/utils/securityUtils/JWTUtils';
 import LoginRedirect from './web/components/security/LoginRedirect';
+import { handleAuthenticationError } from './web/actions/securityActions';
+import UnauthenticatedModal from './web/components/security/SecurityModal';
 
 // eslint-disable-next-line object-curly-newline
 const { Header, Content, Footer } = Layout;
 
 class Routes extends Component {
+  componentDidMount() {
+    const { user: { token } } = this.props;
+    const validAuth = validateJWTToken(token);
+
+    if (validAuth) {
+      setJWTToken(token);
+    } else {
+      UnauthenticatedModal("Credential Expired", () => { this.props.handleAuthenticationError(); });
+    }
+  }
+
   render() {
     const { authenticated } = this.props;
-    const { user: { token } } = this.props;
-    setJWTToken(token);
     return (
       <Layout className="site-layout" style={{ minHeight: '100vh' }}>
         {authenticated && <SideNavbar />}
@@ -57,6 +68,7 @@ class Routes extends Component {
 Routes.propTypes = {
   authenticated: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
+  handleAuthenticationError: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -64,4 +76,4 @@ const mapStateToProps = (state) => ({
   authenticated: state.authentication.authenticated,
 });
 
-export default connect(mapStateToProps, null)(Routes);
+export default connect(mapStateToProps, { handleAuthenticationError })(Routes);
