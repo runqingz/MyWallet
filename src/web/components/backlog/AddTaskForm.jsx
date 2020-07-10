@@ -8,6 +8,8 @@ import {
 } from 'antd';
 
 import { createBacklogTasks } from '../../actions/backlogActions';
+import { handleAuthenticationError } from '../../actions/securityActions';
+import UnauthenticatedModal from '../security/SecurityModal';
 
 class AddTaskForm extends Component {
   constructor() {
@@ -24,7 +26,15 @@ class AddTaskForm extends Component {
       message.success({ content: 'Success', key: 'createTask', duration: 1 });
       history.push(`/project/${projectId}`);
     } catch (error) {
-      message.error({ content: JSON.stringify(error.response.data), key: 'createTask' });
+      if (error.response.status === 401) {
+        message.error({ content: 'In Progress...', key: 'createTask', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(error.response.data), key: 'createTask', duration: 1 });
+      }
     }
   }
 
@@ -127,6 +137,7 @@ AddTaskForm.propTypes = {
   match: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   createBacklogTasks: PropTypes.func.isRequired,
+  handleAuthenticationError: PropTypes.func.isRequired,
 };
 
-export default connect(null, { createBacklogTasks })(AddTaskForm);
+export default connect(null, { createBacklogTasks, handleAuthenticationError })(AddTaskForm);

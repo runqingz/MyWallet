@@ -8,9 +8,11 @@ import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { deleteProject, updateProject } from '../../actions/projectActions';
-import DeleteProjectModal from './DeleteProjectModal';
+import { handleAuthenticationError } from '../../actions/securityActions';
 
+import DeleteProjectModal from './DeleteProjectModal';
 import UpdateProjectForm from './UpdateProjectForm';
+import UnauthenticatedModal from '../security/SecurityModal';
 
 const { Meta } = Card;
 
@@ -35,10 +37,18 @@ class ProjectItem extends Component {
     message.loading({ content: 'In Progress...', key: 'updateProject', duration: 0 });
 
     const err = await this.props.updateProject(values);
-    if (!err) {
-      message.success({ content: 'Success', key: 'updateProject' });
+    if (err) {
+      if (err.status === 401) {
+        message.error({ content: 'In Progress...', key: 'updateProject', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(err.data), key: 'updateProject', duration: 1 });
+      }
     } else {
-      message.error({ content: JSON.stringify(err), key: 'updateProject' });
+      message.success({ content: 'Success', key: 'updateProject' });
     }
   }
 
@@ -46,10 +56,18 @@ class ProjectItem extends Component {
     message.loading({ content: 'In Progress...', key: 'deleteProject', duration: 0 });
 
     const err = await this.props.deleteProject(id);
-    if (!err) {
-      message.success({ content: 'Success', key: 'deleteProject' });
+    if (err) {
+      if (err.status === 401) {
+        message.error({ content: 'In Progress...', key: 'deleteProject', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(err.data), key: 'deleteProject', duration: 1 });
+      }
     } else {
-      message.error({ content: JSON.stringify(err), key: 'deleteProject' });
+      message.success({ content: 'Success', key: 'deleteProject' });
     }
   }
 
@@ -92,6 +110,8 @@ ProjectItem.propTypes = {
   deleteProject: PropTypes.func.isRequired,
   updateProject: PropTypes.func.isRequired,
   history: PropTypes.object.isRequired,
+  handleAuthenticationError: PropTypes.func.isRequired,
 };
 
-export default connect(null, { deleteProject, updateProject })(ProjectItem);
+export default connect(null,
+  { deleteProject, updateProject, handleAuthenticationError })(ProjectItem);

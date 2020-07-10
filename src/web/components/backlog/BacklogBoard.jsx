@@ -19,6 +19,7 @@ import '../../../App.css';
 import DeleteTaskModal from './DeleteTaskModal';
 import UpdateTaskFormModal from './UpdateTaskFormModal';
 import BacklogDescription from './BacklogDescription';
+import UnauthenticatedModal from '../security/SecurityModal';
 
 class BacklogBoard extends Component {
   constructor() {
@@ -47,7 +48,15 @@ class BacklogBoard extends Component {
       this.setState({ isLoading: false });
     } catch (error) {
       message.error({ content: JSON.stringify(error.response.data), key: 'getBacklogBoardInfo' });
-      if (error.response.status === 401) this.props.handleAuthenticationError();
+      if (error.response.status === 401) {
+        message.error({ content: 'In Progress...', key: 'getBacklogBoardInfo', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(error.response.data), key: 'getBacklogBoardInfo', duration: 1 });
+      }
     }
   }
 
@@ -58,7 +67,15 @@ class BacklogBoard extends Component {
       await this.props.deleteTask(projectId, taskId);
       message.success({ content: 'Success', key: 'deleteProject' });
     } catch (error) {
-      message.error({ content: JSON.stringify(error.response.data), key: 'deleteProject' });
+      if (error.response.status === 401) {
+        message.error({ content: 'In Progress...', key: 'deleteProject', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(error.response.data), key: 'deleteProject', duration: 1 });
+      }
     }
     this.setState({ editingKey: -1, isTaskUpdating: false });
   }
@@ -73,7 +90,15 @@ class BacklogBoard extends Component {
       await this.props.getPostedSumById(projectId);
       message.success({ content: 'Success', key: 'updateTask' });
     } catch (error) {
-      message.error({ content: JSON.stringify(error), key: 'updateTask' });
+      if (error.response.status === 401) {
+        message.error({ content: 'In Progress...', key: 'updateTask', duration: 0.5 });
+        const onOk = () => {
+          this.props.handleAuthenticationError();
+        };
+        UnauthenticatedModal('Invalid Credentials', onOk);
+      } else {
+        message.error({ content: JSON.stringify(error.response.data), key: 'updateTask', duration: 1 });
+      }
     }
     this.setState({ editingKey: -1, isTaskUpdating: false });
   }
