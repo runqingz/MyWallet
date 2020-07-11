@@ -104,7 +104,6 @@ const UpdateTaskFormModal = ({
 };
 
 UpdateTaskFormModal.propTypes = {
-  visible: PropTypes.bool.isRequired,
   onUpdate: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   task: PropTypes.object.isRequired,
