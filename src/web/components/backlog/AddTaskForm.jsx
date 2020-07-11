@@ -1,5 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -42,7 +40,6 @@ class AddTaskForm extends Component {
     const { history, match: { params: { projectId } } } = this.props;
     history.push(`/project/${projectId}`);
   }
-
 
   render() {
     const { Option } = Select;

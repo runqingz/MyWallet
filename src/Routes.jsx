@@ -1,6 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable react/jsx-closing-tag-location */
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
@@ -23,7 +20,6 @@ import LoginRedirect from './web/components/security/LoginRedirect';
 import { handleAuthenticationError } from './web/actions/securityActions';
 import UnauthenticatedModal from './web/components/security/SecurityModal';
 
-// eslint-disable-next-line object-curly-newline
 const { Header, Content, Footer } = Layout;
 
 class Routes extends Component {
@@ -34,7 +30,7 @@ class Routes extends Component {
     if (validAuth) {
       setJWTToken(token);
     } else {
-      UnauthenticatedModal("Credential Expired", () => { this.props.handleAuthenticationError(); });
+      UnauthenticatedModal('Credential Expired', () => { this.props.handleAuthenticationError(); });
     }
   }
 

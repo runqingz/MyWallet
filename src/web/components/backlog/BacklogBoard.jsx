@@ -1,6 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from 'react';
 import {
   Tabs, Table, Space, Button, message, Spin,
@@ -36,11 +33,8 @@ class BacklogBoard extends Component {
     message.loading({ content: 'In Progress...', key: 'getBacklogBoardInfo', duration: 0 });
 
     try {
-      // eslint-disable-next-line react/destructuring-assignment
       await this.props.getProject(projectId);
-      // eslint-disable-next-line react/destructuring-assignment
       await this.props.getBacklogTasks(projectId);
-      // eslint-disable-next-line react/destructuring-assignment
       await this.props.getSumById(projectId);
       await this.props.getPostedSumById(projectId);
 

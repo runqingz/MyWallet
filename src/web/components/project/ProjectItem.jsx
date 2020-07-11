@@ -1,6 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prefer-stateless-function */
-/* eslint-disable react/forbid-prop-types */
 import React, { Component } from 'react';
 import { Card, message } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';

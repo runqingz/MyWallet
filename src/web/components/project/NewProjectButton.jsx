@@ -72,4 +72,5 @@ const mapStateToProps = (state) => ({
   errors: state.errors,
 });
 
-export default connect(mapStateToProps, { createProject, handleAuthenticationError })(NewProjectButton);
+export default connect(mapStateToProps,
+  { createProject, handleAuthenticationError })(NewProjectButton);

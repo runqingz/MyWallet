@@ -1,6 +1,3 @@
-/* eslint-disable react/forbid-prop-types */
-/* eslint-disable react/prefer-stateless-function */
-
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -14,7 +11,6 @@ import UnauthenticatedModal from './security/SecurityModal';
 
 class Dashboard extends React.Component {
   async componentDidMount() {
-    // eslint-disable-next-line react/destructuring-assignment
     message.loading({ content: 'Loading Projects', key: 'getAllProjects', duration: 0 });
     const err = await this.props.getProjects();
 
