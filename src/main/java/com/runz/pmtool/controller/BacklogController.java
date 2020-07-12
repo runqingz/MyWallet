@@ -6,7 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.runz.pmtool.domain.Task;
-import com.runz.pmtool.domain.TaskStatus;
+import com.runz.pmtool.domain.Task.TaskStatus;
 import com.runz.pmtool.services.MapValidationService;
 import com.runz.pmtool.services.TaskService;
 

@@ -129,6 +129,12 @@ class BacklogBoard extends Component {
         width: 150,
       },
       {
+        title: 'Type',
+        dataIndex: 'type',
+        width: 150,
+        render: (record) => (<span>{record.charAt(0) + record.slice(1).toLowerCase()}</span>),
+      },
+      {
         title: 'Description',
         dataIndex: 'description',
       },

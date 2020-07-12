@@ -41,6 +41,7 @@ const UpdateTaskFormModal = ({
           modifier: 'public',
           summary: task.summary,
           status: task.status,
+          type: task.type,
           value: task.value,
           postDate: moment(task.postDate, dateFormat),
           description: task.description,
@@ -66,6 +67,20 @@ const UpdateTaskFormModal = ({
           >
             <Option value="PENDING">Pending</Option>
             <Option value="POSTED">Posted</Option>
+          </Select>
+        </Form.Item>
+        <Form.Item name="type" label="Type" rules={[{ required: true }]}>
+          <Select
+            placeholder="Select task type"
+            allowClear
+            style={{ width: '150px' }}
+          >
+            <Option value="INCOME">Income</Option>
+            <Option value="GROCERY">Grocery</Option>
+            <Option value="ENTERTAINMENT">Entertainment</Option>
+            <Option value="HEALTH">Health</Option>
+            <Option value="UTILITY">Utility</Option>
+            <Option value="OTHER">Other</Option>
           </Select>
         </Form.Item>
         <Form.Item

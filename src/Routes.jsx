@@ -23,8 +23,9 @@ import UnauthenticatedModal from './web/components/security/SecurityModal';
 const { Header, Content, Footer } = Layout;
 
 class Routes extends Component {
-  componentDidMount() {
-    const { user: { token } } = this.props;
+  constructor(props) {
+    super();
+    const { user: { token } } = props;
     const validAuth = validateJWTToken(token);
 
     if (validAuth) {

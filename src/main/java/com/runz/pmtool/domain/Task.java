@@ -22,6 +22,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Task {
   
+    public enum TaskType {
+        INCOME, GROCERY, ENTERTAINMENT, HEALTH, UTILITY, OTHER;
+    }
+
+    public enum TaskStatus {
+        PENDING, POSTED;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,6 +49,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
+    @Enumerated(EnumType.STRING)
+    private TaskType type;
+
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date postDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -53,8 +64,7 @@ public class Task {
     @JsonIgnore
     private Backlog backlog;
 
-    public Task() {
-    }
+    public Task() {}
 
     @PrePersist
     protected void onCreate() {
@@ -155,4 +165,11 @@ public class Task {
         this.projectIdentifier = projectIdentifier;
     }
 
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
+    }
 }
