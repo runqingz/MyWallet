@@ -18,7 +18,6 @@ import UserLoginForm from './web/components/user/UserLoginForm';
 import { setJWTToken, validateJWTToken } from './web/utils/securityUtils/JWTUtils';
 import LoginRedirect from './web/components/security/LoginRedirect';
 import { handleAuthenticationError } from './web/actions/securityActions';
-import UnauthenticatedModal from './web/components/security/SecurityModal';
 
 const { Header, Content, Footer } = Layout;
 
@@ -31,7 +30,7 @@ class Routes extends Component {
     if (validAuth) {
       setJWTToken(token);
     } else {
-      UnauthenticatedModal('Credential Expired', () => { this.props.handleAuthenticationError(); });
+      props.handleAuthenticationError();
     }
   }
 
