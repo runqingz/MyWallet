@@ -55,6 +55,9 @@ public class User implements UserDetails {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
     private List<Project> projects = new ArrayList<>();
 
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY, mappedBy = "user", orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
+
     @PrePersist
     protected void onCreate() {
         this.createAt = new Date();
@@ -170,5 +173,13 @@ public class User implements UserDetails {
 
     public void setProjects(List<Project> projects) {
         this.projects = projects;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 }

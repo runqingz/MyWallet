@@ -4,11 +4,13 @@ import java.util.List;
 
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Task;
+import com.runz.pmtool.domain.User;
 import com.runz.pmtool.domain.Task.TaskStatus;
 import com.runz.pmtool.domain.Task.TaskType;
 import com.runz.pmtool.exceptions.BacklogException;
 import com.runz.pmtool.exceptions.TaskException;
 import com.runz.pmtool.repositories.TaskRepository;
+import com.runz.pmtool.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class TaskService {
     @Autowired
     private ProjectService projectService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public Task addTask(String projectIdentifier, Task task, String username) {
 
         Backlog backlog = projectService.findByProjectIdentifier(projectIdentifier, username).getBacklog();
@@ -30,6 +35,9 @@ public class TaskService {
         task.setProjectSquence(projectIdentifier + "-" + sequence);
         backlog.setTaskSequence(sequence);
         task.setProjectIdentifier(projectIdentifier);
+
+        User user = userRepository.findByUsername(username);
+        task.setUser(user);
         
         if(task.getStatus() == null) {
             task.setStatus(TaskStatus.POSTED);
@@ -74,6 +82,14 @@ public class TaskService {
         Task task = findTaskByProjectSequence(backlog_id, projectSequence, username);
 
         task = updatedTask;
+
+        if(task.getStatus() == null) {
+            task.setStatus(TaskStatus.POSTED);
+        }     
+        
+        if(task.getType() == null) {
+            task.setType(TaskType.OTHER);
+        }
 
         return taskRepository.save(task);
     }
