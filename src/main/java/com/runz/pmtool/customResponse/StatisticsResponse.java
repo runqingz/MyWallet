@@ -8,6 +8,11 @@ public class StatisticsResponse {
     private List<Double> aggregateIncomes;
     private List<Double> aggregateExpenses;
 
+    public interface MonthlySum {
+        Double getSum();
+        Integer getMonth();
+    }
+
     public StatisticsResponse() {
     }
 

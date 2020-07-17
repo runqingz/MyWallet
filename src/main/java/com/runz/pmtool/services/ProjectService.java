@@ -81,5 +81,4 @@ public class ProjectService {
     public void deleteByProjectIdentifier(String identifier, String username) {
         projectRepository.delete(findByProjectIdentifier(identifier, username));
     }
-
 }

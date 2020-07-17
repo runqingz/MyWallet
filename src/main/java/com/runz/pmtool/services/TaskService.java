@@ -2,6 +2,7 @@ package com.runz.pmtool.services;
 
 import java.util.List;
 
+import com.runz.pmtool.customResponse.StatisticsResponse.MonthlySum;
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.User;
@@ -105,6 +106,12 @@ public class TaskService {
         List<Task> tasks = status == null ? findAllTasksById(backlog_id, username) : findAllTasksByIdAndStatus(backlog_id, status, username);
 
         return tasks.stream().reduce(0.0, (partialValueSum, task) -> partialValueSum + task.getValue(), Double::sum);
+    }
+
+    public List<MonthlySum> findUserMonthlySaving(TaskStatus status, String username) {
+        User user = userRepository.findByUsername(username);
+
+        return taskRepository.findSumByUserGroupByMonthList(user.getId(), status);
     }
   
 }

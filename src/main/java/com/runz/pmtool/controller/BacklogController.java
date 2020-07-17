@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.runz.pmtool.customResponse.StatisticsResponse.MonthlySum;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.Task.TaskStatus;
 import com.runz.pmtool.services.MapValidationService;
@@ -77,5 +78,10 @@ public class BacklogController {
     @GetMapping("/{backlog_id}/sum")
     public Double getBacklogGrossValue(@PathVariable String backlog_id, @RequestParam(required = false) TaskStatus status, Principal principal) {
         return taskService.sumTaskValueById(backlog_id, status, principal.getName());
+    }
+
+    @GetMapping("/test")
+    public List<MonthlySum> getUserMonthlySaving(@RequestParam(required = true) TaskStatus status, Principal principal) {
+        return taskService.findUserMonthlySaving(status, principal.getName());
     }
 }
