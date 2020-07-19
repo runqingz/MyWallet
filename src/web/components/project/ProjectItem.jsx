@@ -77,7 +77,6 @@ class ProjectItem extends Component {
     return (
       <div>
         <Card
-          style={{ width: 300 }}
           title={project.projectName}
           actions={[
             <EditOutlined key="edit" onClick={() => { this.setState({ visible: true }); }} />,

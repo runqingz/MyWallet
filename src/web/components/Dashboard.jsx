@@ -48,8 +48,8 @@ class Dashboard extends React.Component {
                   sm: 2,
                   md: 4,
                   lg: 4,
-                  xl: 6,
-                  xxl: 3,
+                  xl: 4,
+                  xxl: 4,
                 }}
                 dataSource={projects}
                 renderItem={(projectIt) => (

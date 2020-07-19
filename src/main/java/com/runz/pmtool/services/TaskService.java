@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.runz.pmtool.customResponse.StatisticsResponse;
-import com.runz.pmtool.customResponse.StatisticsResponse.AggregateSum;
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.User;
