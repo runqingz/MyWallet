@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import com.runz.pmtool.customResponse.StatisticsResponse.MonthlySum;
+import com.runz.pmtool.customResponse.StatisticsResponse;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.Task.TaskStatus;
 import com.runz.pmtool.services.MapValidationService;
@@ -80,8 +80,14 @@ public class BacklogController {
         return taskService.sumTaskValueById(backlog_id, status, principal.getName());
     }
 
-    @GetMapping("/test")
-    public List<MonthlySum> getUserMonthlySaving(@RequestParam(required = true) TaskStatus status, Principal principal) {
-        return taskService.findUserMonthlySaving(status, principal.getName());
+    //TODO: consider move to a stats controller
+    @GetMapping("/stats")
+    public ResponseEntity<?> getUserMonthlySaving(@RequestParam(required = true) TaskStatus status, Principal principal) {
+        StatisticsResponse stats = new StatisticsResponse();
+
+        stats.setIncomes(taskService.userCurrentMonthDailyIncome(status, principal.getName()));
+        stats.setExpenses(taskService.userCurrentMonthDailyExpense(status, principal.getName()));
+
+        return new ResponseEntity<StatisticsResponse>(stats, HttpStatus.OK);
     }
 }

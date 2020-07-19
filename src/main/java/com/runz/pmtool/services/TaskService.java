@@ -1,8 +1,9 @@
 package com.runz.pmtool.services;
 
+import java.util.Date;
 import java.util.List;
 
-import com.runz.pmtool.customResponse.StatisticsResponse.MonthlySum;
+import com.runz.pmtool.customResponse.StatisticsResponse.AggregateSum;
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.User;
@@ -108,10 +109,15 @@ public class TaskService {
         return tasks.stream().reduce(0.0, (partialValueSum, task) -> partialValueSum + task.getValue(), Double::sum);
     }
 
-    public List<MonthlySum> findUserMonthlySaving(TaskStatus status, String username) {
+    public List<AggregateSum> userCurrentMonthDailyIncome(TaskStatus status, String username) {
         User user = userRepository.findByUsername(username);
 
-        return taskRepository.findSumByUserGroupByMonthList(user.getId(), status);
+        return taskRepository.findMonthlyIncomeSumByUserGroupByDayList(user.getId(), status, new Date());
     }
-  
+
+    public List<AggregateSum> userCurrentMonthDailyExpense(TaskStatus status, String username) {
+        User user = userRepository.findByUsername(username);
+
+        return taskRepository.findMonthlyExpenseSumByUserGroupByDayList(user.getId(), status, new Date());
+    }
 }
