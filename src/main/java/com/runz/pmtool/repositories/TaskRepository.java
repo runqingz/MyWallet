@@ -26,4 +26,10 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
 
     @Query("Select SUM(t.value) AS sum, DAY(t.postDate) AS group FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY DAY(t.postDate)")
     List<AggregateSum> findMonthlyExpenseSumByUserGroupByDayList(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
+
+    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type = 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY DAY(t.user.id)")
+    Double findMonthlyIncomeSumByUser(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
+
+    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY DAY(t.user.id)")
+    Double findMonthlyExpenseSumByUser(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 }

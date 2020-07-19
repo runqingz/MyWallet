@@ -3,6 +3,7 @@ package com.runz.pmtool.services;
 import java.util.Date;
 import java.util.List;
 
+import com.runz.pmtool.customResponse.StatisticsResponse;
 import com.runz.pmtool.customResponse.StatisticsResponse.AggregateSum;
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Task;
@@ -109,15 +110,22 @@ public class TaskService {
         return tasks.stream().reduce(0.0, (partialValueSum, task) -> partialValueSum + task.getValue(), Double::sum);
     }
 
-    public List<AggregateSum> userCurrentMonthDailyIncome(TaskStatus status, String username) {
+    public StatisticsResponse userMontlyReport(String username) {
         User user = userRepository.findByUsername(username);
+        Long userId = user.getId();
+        Date date = new Date();
 
-        return taskRepository.findMonthlyIncomeSumByUserGroupByDayList(user.getId(), status, new Date());
-    }
+        StatisticsResponse stats = new StatisticsResponse();
 
-    public List<AggregateSum> userCurrentMonthDailyExpense(TaskStatus status, String username) {
-        User user = userRepository.findByUsername(username);
+        stats.setIncomes(taskRepository.findMonthlyIncomeSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
+        stats.setExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
 
-        return taskRepository.findMonthlyExpenseSumByUserGroupByDayList(user.getId(), status, new Date());
+        Double totalIncome = taskRepository.findMonthlyIncomeSumByUser(userId, TaskStatus.POSTED, date);
+        if(totalIncome != null) stats.setTotalIncome(totalIncome);
+
+        Double totalExpense = taskRepository.findMonthlyExpenseSumByUser(userId, TaskStatus.POSTED, date);
+        if(totalExpense != null) stats.setTotalExpense(totalExpense);
+
+        return stats;
     }
 }

@@ -3,6 +3,8 @@ package com.runz.pmtool.customResponse;
 import java.util.List;
 
 public class StatisticsResponse {
+    private Double totalIncome = 0.0;
+    private Double totalExpense = 0.0;
     private List<AggregateSum> incomes;
     private List<AggregateSum> expenses;
 
@@ -28,5 +30,21 @@ public class StatisticsResponse {
 
     public void setExpenses(List<AggregateSum> expenses) {
         this.expenses = expenses;
+    }
+
+    public Double getTotalIncome() {
+        return totalIncome;
+    }
+
+    public void setTotalIncome(Double totalIncome) {
+        this.totalIncome = totalIncome;
+    }
+
+    public Double getTotalExpense() {
+        return totalExpense;
+    }
+
+    public void setTotalExpense(Double totalExpense) {
+        this.totalExpense = totalExpense;
     }
 }

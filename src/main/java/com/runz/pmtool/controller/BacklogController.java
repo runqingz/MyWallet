@@ -82,12 +82,8 @@ public class BacklogController {
 
     //TODO: consider move to a stats controller
     @GetMapping("/stats")
-    public ResponseEntity<?> getUserMonthlySaving(@RequestParam(required = true) TaskStatus status, Principal principal) {
-        StatisticsResponse stats = new StatisticsResponse();
+    public ResponseEntity<?> getUserMonthlySaving(Principal principal) {
 
-        stats.setIncomes(taskService.userCurrentMonthDailyIncome(status, principal.getName()));
-        stats.setExpenses(taskService.userCurrentMonthDailyExpense(status, principal.getName()));
-
-        return new ResponseEntity<StatisticsResponse>(stats, HttpStatus.OK);
+        return new ResponseEntity<StatisticsResponse>(taskService.userMontlyReport(principal.getName()), HttpStatus.OK);
     }
 }
