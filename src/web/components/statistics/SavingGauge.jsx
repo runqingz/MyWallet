@@ -7,6 +7,7 @@ import {
   Coordinate,
   registerShape,
 } from 'bizcharts';
+import PropTypes from 'prop-types';
 
 // 自定义Shape 部分
 registerShape('point', 'pointer', {
@@ -40,18 +41,21 @@ registerShape('point', 'pointer', {
   },
 });
 
-const data = [{ value: 5.6 }];
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
+}
 
-export default function SavingGauge() {
+export default function SavingGauge({ data }) {
+  const displayData = data.map((item) => ({ value: clamp(item.value, -5, 5) }));
   return (
     <Chart
       height={200}
-      data={data}
+      data={displayData}
       padding={[0, 0, 30, 0]}
       scale={{
         value: {
-          min: 0,
-          max: 9,
+          min: -5,
+          max: 5,
           tickInterval: 1,
         },
       }}
@@ -96,8 +100,8 @@ export default function SavingGauge() {
       />
       <Annotation.Arc
         top={false}
-        start={[0, 1]}
-        end={[9, 1]}
+        start={[-5, 1]}
+        end={[5, 1]}
         style={{
           stroke: '#CBCBCB',
           lineWidth: 18,
@@ -105,8 +109,8 @@ export default function SavingGauge() {
         }}
       />
       <Annotation.Arc
-        start={[0, 1]}
-        end={[data[0].value, 1]}
+        start={[-5, 1]}
+        end={[clamp(data[0].value, -5, 5), 1]}
         style={{
           stroke: '#1890FF',
           lineWidth: 18,
@@ -115,7 +119,7 @@ export default function SavingGauge() {
       />
       <Annotation.Text
         position={['50%', '90%']}
-        content={`${data[0].value * 10}% ($123.456)`}
+        content={`${data[0].value * 10}% ($${data[0].raw})`}
         style={{
           fontSize: 14,
           fill: '#545454',
@@ -126,3 +130,7 @@ export default function SavingGauge() {
     </Chart>
   );
 }
+
+SavingGauge.propTypes = {
+  data: PropTypes.array.isRequired,
+};

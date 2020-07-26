@@ -118,6 +118,7 @@ public class TaskService {
 
         stats.setIncomes(taskRepository.findMonthlyIncomeSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
         stats.setExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
+        stats.setTypedExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByTypeList(userId, TaskStatus.POSTED, date));
 
         Double totalIncome = taskRepository.findMonthlyIncomeSumByUser(userId, TaskStatus.POSTED, date);
         if(totalIncome != null) stats.setTotalIncome(totalIncome);

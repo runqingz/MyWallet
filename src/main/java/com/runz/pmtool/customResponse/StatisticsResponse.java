@@ -2,15 +2,19 @@ package com.runz.pmtool.customResponse;
 
 import java.util.List;
 
+import com.runz.pmtool.domain.Task.TaskType;
+
 public class StatisticsResponse {
     private Double totalIncome = 0.0;
     private Double totalExpense = 0.0;
     private List<AggregateSum> incomes;
     private List<AggregateSum> expenses;
+    private List<AggregateSum> typedExpenses;
 
     public interface AggregateSum {
         Double getSum();
         Integer getGroup();
+        TaskType getType();
     }
 
     public StatisticsResponse() {
@@ -46,5 +50,13 @@ public class StatisticsResponse {
 
     public void setTotalExpense(Double totalExpense) {
         this.totalExpense = totalExpense;
+    }
+
+    public List<AggregateSum> getTypedExpenses() {
+        return typedExpenses;
+    }
+
+    public void setTypedExpenses(List<AggregateSum> typedExpenses) {
+        this.typedExpenses = typedExpenses;
     }
 }
