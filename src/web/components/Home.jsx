@@ -4,44 +4,29 @@ import { useSelector, useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import {
-  message, Row, Col, Card,
+  message, Row, Col, Card, Radio, Typography,
 } from 'antd';
 import IncomeExpenseBarChart from './statistics/IncomeExpenseBarChart';
 import SavingGauge from './statistics/SavingGauge';
 import SavingPieChart from './statistics/SavingPieChart';
-import UnauthenticatedModal from './security/SecurityModal';
+import handleApiError from '../utils/apiUtils';
 
-import { GET_REPORT, UNAUTHORIZED_ERROR } from '../actions/types';
+import { GET_REPORT } from '../actions/types';
 
-function Home() {
-  const dispatch = useDispatch();
+async function fetchData(dispatch) {
+  try {
+    message.loading({ content: 'Loading Projects', key: 'getReport', duration: 0 });
+    const res = await axios.get('api/backlog/stats');
+    dispatch({ type: GET_REPORT, payload: res.data });
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        message.loading({ content: 'Loading Projects', key: 'getReport', duration: 0 });
-        const res = await axios.get('api/backlog/stats');
-        dispatch({ type: GET_REPORT, payload: res.data });
+    message.success({ content: 'Success', key: 'getReport', duration: 1 });
+  } catch (err) {
+    handleApiError(dispatch, err, 'getReport');
+  }
+}
 
-        message.success({ content: 'Success', key: 'getReport', duration: 1 });
-      } catch (err) {
-        if (err.response.status === 401) {
-          message.error({ content: 'Loading Projects', key: 'getReport', duration: 0.5 });
-          const onOk = () => {
-            dispatch({ type: UNAUTHORIZED_ERROR });
-          };
-          UnauthenticatedModal('Invalid Credentials', onOk);
-        } else {
-          message.error({ content: JSON.stringify(err.response.data), key: 'getReport', duration: 1 });
-        }
-      }
-    }
-
-    fetchData();
-  }, [dispatch]);
-
-  const report = useSelector((state) => state.report.report);
-  const incomeData = [];
+function formatData(report) {
+  const incomes = [];
   const typedExpense = [];
   const savingRate = report.totalIncome === 0 ? [{ value: 0, raw: 0 }]
     : [{
@@ -50,22 +35,35 @@ function Home() {
     }];
 
   if (report.incomes) {
-    report.incomes.map((item) => (incomeData.push({ name: 'income', group: item.group.toString(), value: item.sum })));
+    report.incomes.map((item) => (incomes.push({ name: 'income', group: item.group.toString(), value: item.sum })));
   }
 
   if (report.expenses) {
-    report.expenses.map((item) => (incomeData.push({ name: 'expense', group: item.group.toString(), value: Math.abs(item.sum) })));
+    report.expenses.map((item) => (incomes.push({ name: 'expense', group: item.group.toString(), value: Math.abs(item.sum) })));
   }
+
+  incomes.sort((a, b) => a.group - b.group);
 
   if (report.typedExpenses) {
     report.typedExpenses.map((item) => (typedExpense.push({
       item: item.type,
       value: Math.abs(item.sum),
-      percent: (Math.abs(item.sum) / Math.abs(report.totalExpense)),
+      percent: report.totalExpense === 0 ? 0 : (Math.abs(item.sum) / Math.abs(report.totalExpense)),
     })));
   }
 
-  incomeData.sort((a, b) => a.group - b.group);
+  return { incomes, typedExpense, savingRate };
+}
+
+function Home() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchData(dispatch);
+  }, [dispatch]);
+
+  const data = formatData(useSelector((state) => state.report.report));
+  const { Title } = Typography;
 
   return (
     <div className="Home">
@@ -73,24 +71,28 @@ function Home() {
         <div className="row">
           <div className="col-12">
             <br />
-            Reports
+            <Title level={4}>Report</Title>
             <hr />
+            <Radio.Group defaultValue="month" buttonStyle="solid" style={{ paddingBottom: '20px' }}>
+              <Radio.Button value="month">By Month</Radio.Button>
+              <Radio.Button value="year">By Year</Radio.Button>
+            </Radio.Group>
             <Row gutter={[16, 24]}>
               <Col span={16}>
                 <Card title="Income and Expense">
-                  <IncomeExpenseBarChart data={incomeData} />
+                  <IncomeExpenseBarChart data={data.incomes} />
                 </Card>
               </Col>
               <Col span={8}>
                 <Card title="Saving Rate">
-                  <SavingGauge data={savingRate} />
+                  <SavingGauge data={data.savingRate} />
                 </Card>
               </Col>
             </Row>
             <Row gutter={[16, 24]}>
               <Col span={24}>
                 <Card title="Expense Breakdown">
-                  <SavingPieChart data={typedExpense} />
+                  <SavingPieChart data={data.typedExpense} />
                 </Card>
               </Col>
             </Row>

@@ -18,13 +18,11 @@ function SideNavbar() {
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
       <div className="logo" />
       <Affix offsetTop={top}>
-        <Menu theme="dark" defaultSelectedKeys={[path]} mode="inline">
-          <Menu.Item key="/">
-            <HomeOutlined />
+        <Menu theme="dark" defaultSelectedKeys={[path]} mode="inline" inlineCollapsed={collapsed}>
+          <Menu.Item icon={<HomeOutlined />} key="/">
             <Link to="/">Home</Link>
           </Menu.Item>
-          <Menu.Item key="/dashboard">
-            <PieChartOutlined />
+          <Menu.Item key="/dashboard" icon={<PieChartOutlined />}>
             <Link to="/dashboard">Dashboard</Link>
           </Menu.Item>
         </Menu>
