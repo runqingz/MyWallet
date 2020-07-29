@@ -1,6 +1,7 @@
 import {
   LOGIN, AUTHENTICATION_ERROR, UNAUTHORIZED_ERROR, LOGOUT,
 } from '../actions/types';
+import { setJWTToken } from '../utils/securityUtils/JWTUtils';
 
 const initialState = {
   user: {},
@@ -28,6 +29,7 @@ export default function (state = initialState, action) {
         authenticated: false,
       };
     case UNAUTHORIZED_ERROR:
+      setJWTToken(null);
       return {
         ...state,
         user: {},
