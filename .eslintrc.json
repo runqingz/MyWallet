@@ -20,7 +20,6 @@
     ],
     "rules": {
         "react/destructuring-assignment": "off",
-        "react/forbid-prop-types": "off",
-        "react/prefer-stateless-function": "off"
+        "react/forbid-prop-types": "off"
     }
 }

@@ -15,7 +15,7 @@ import { GET_REPORT } from '../actions/types';
 
 async function fetchData(dispatch) {
   try {
-    message.loading({ content: 'Loading Projects', key: 'getReport', duration: 0 });
+    message.loading({ content: 'Loading Report', key: 'getReport', duration: 0 });
     const res = await axios.get('api/backlog/stats');
     dispatch({ type: GET_REPORT, payload: res.data });
 
