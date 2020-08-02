@@ -21,8 +21,11 @@ export const UPDATE_TASK = 'UPDATE_TASK';
 // Security Action Types
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
-export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
-export const UNAUTHORIZED_ERROR = 'UNAUTHORIZE_ERROR';
 
 // Report Action Types
 export const GET_REPORT = 'GET_REPORT';
+
+// Error Type
+export const ERROR = 'ERROR';
+export const AUTHENTICATION_ERROR = 'AUTHENTICATION_ERROR';
+export const UNAUTHORIZED_ERROR = 'UNAUTHORIZE_ERROR';

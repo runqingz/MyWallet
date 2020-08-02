@@ -18,7 +18,7 @@ function SideNavbar() {
     <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
       <div className="logo" />
       <Affix offsetTop={top}>
-        <Menu theme="dark" defaultSelectedKeys={[path]} mode="inline" inlineCollapsed={collapsed}>
+        <Menu theme="dark" defaultSelectedKeys={[path]} mode="inline">
           <Menu.Item icon={<HomeOutlined />} key="/">
             <Link to="/">Home</Link>
           </Menu.Item>

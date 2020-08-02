@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 
 import { message, List } from 'antd';
 
@@ -8,23 +7,25 @@ import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
 import handleApiError from '../utils/apiUtils';
 
-import { GET_PROJECTS } from '../actions/types';
+import { getProjects } from '../actions/projectActions';
+import apiErrorAction from '../actions/apiErrorAction';
 
 async function fetchData(dispatch) {
   try {
+    const action = await getProjects();
     message.loading({ content: 'Loading Projects', key: 'getAllProjects', duration: 0 });
-    const res = await axios.get('/api/project/all');
-    dispatch({ type: GET_PROJECTS, payload: res.data });
+    dispatch(action);
 
     message.success({ content: 'Success', key: 'getAllProjects', duration: 1 });
   } catch (err) {
-    handleApiError(dispatch, err, 'getAllProjects');
+    const errorAction = apiErrorAction(err);
+    handleApiError(err, 'getAllProjects');
+    dispatch(errorAction);
   }
 }
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-
   useEffect(() => {
     fetchData(dispatch);
   }, [dispatch]);
