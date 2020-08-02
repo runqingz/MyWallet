@@ -5,7 +5,7 @@ import {
 import UnauthenticatedModal from '../components/security/SecurityModal';
 
 const handleApiError = (err, msgKey) => {
-  if (err.response.status === 401) {
+  if (err.response && err.response.status && err.response.status === 401) {
     message.error({ content: 'Loading Projects', key: msgKey, duration: 0.5 });
     UnauthenticatedModal('Invalid Credentials');
   } else {

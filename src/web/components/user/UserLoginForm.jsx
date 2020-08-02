@@ -6,11 +6,8 @@ import {
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import jwtDecode from 'jwt-decode';
 
-import { LOGIN } from '../../actions/types';
-import { setJWTToken } from '../../utils/securityUtils/JWTUtils';
+import { userLoginAction } from '../../actions/securityActions';
 
 export default function UserLoginForm() {
   const { Title } = Typography;
@@ -19,18 +16,11 @@ export default function UserLoginForm() {
 
   async function onFinish(values) {
     try {
+      const loginAction = await userLoginAction(values);
       message.loading({ content: 'Logging in', key: 'userLogin', duration: 0 });
-      const res = await axios.post('api/user/login', values);
-      const { token } = res.data;
-      setJWTToken(token);
+      dispatch(loginAction);
 
-      const decodedBody = { ...jwtDecode(token), token };
-      dispatch({
-        type: LOGIN,
-        payload: decodedBody,
-      });
-
-      message.success({ content: 'Success', key: 'userLogin', duration: 1 });
+      message.success({ content: 'Logged in', key: 'userLogin', duration: 1 });
 
       history.push('/');
     } catch (error) {

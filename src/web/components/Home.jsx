@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import axios from 'axios';
-
 import {
   message, Row, Col, Card, Radio, Typography,
 } from 'antd';
@@ -11,14 +9,14 @@ import SavingGauge from './statistics/SavingGauge';
 import SavingPieChart from './statistics/SavingPieChart';
 import handleApiError from '../utils/apiUtils';
 
-import { GET_REPORT } from '../actions/types';
+import getReportAction from '../actions/reportActions';
 
 async function fetchData(dispatch) {
   try {
+    const reportAction = await getReportAction();
     message.loading({ content: 'Loading Report', key: 'getReport', duration: 0 });
-    const res = await axios.get('api/backlog/stats');
-    dispatch({ type: GET_REPORT, payload: res.data });
 
+    dispatch(reportAction);
     message.success({ content: 'Success', key: 'getReport', duration: 1 });
   } catch (err) {
     handleApiError(dispatch, err, 'getReport');
