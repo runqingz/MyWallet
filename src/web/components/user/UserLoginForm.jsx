@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Row, Col, Form, Input, Button, Checkbox,
   Typography, Space, message,
@@ -7,12 +7,16 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { userLoginAction } from '../../actions/securityActions';
+import { userLoginAction, clearCurrentUserAction } from '../../actions/securityActions';
 
 export default function UserLoginForm() {
   const { Title } = Typography;
   const history = useHistory();
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(clearCurrentUserAction());
+  }, [dispatch]);
 
   async function onFinish(values) {
     try {

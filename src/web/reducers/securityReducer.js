@@ -1,5 +1,5 @@
 import {
-  LOGIN, AUTHENTICATION_ERROR, UNAUTHORIZED_ERROR, LOGOUT,
+  LOGIN, AUTHENTICATION_ERROR, UNAUTHORIZED_ERROR, CLEAR_CURRENT_USER,
 } from '../actions/types';
 import { setJWTToken } from '../utils/securityUtils/JWTUtils';
 
@@ -16,7 +16,8 @@ export default function (state = initialState, action) {
         user: action.payload,
         authenticated: true,
       };
-    case LOGOUT:
+    case CLEAR_CURRENT_USER:
+      setJWTToken(null);
       return {
         ...state,
         user: {},

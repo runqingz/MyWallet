@@ -1,7 +1,7 @@
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { setJWTToken } from '../utils/securityUtils/JWTUtils';
-import { LOGIN, AUTHENTICATION_ERROR } from './types';
+import { LOGIN, AUTHENTICATION_ERROR, CLEAR_CURRENT_USER } from './types';
 
 export const userLoginAction = async (loginRequestBody) => {
   const res = await axios.post('api/user/login', loginRequestBody);
@@ -13,9 +13,12 @@ export const userLoginAction = async (loginRequestBody) => {
   return { type: LOGIN, payload: decodedBody };
 };
 
-export const handleAuthenticationError = () => (dispatch) => {
+export const handleAuthenticationError = () => {
   setJWTToken(null);
-  dispatch({
-    type: AUTHENTICATION_ERROR,
-  });
+  return { type: AUTHENTICATION_ERROR };
+};
+
+export const clearCurrentUserAction = () => {
+  setJWTToken(null);
+  return { type: CLEAR_CURRENT_USER };
 };

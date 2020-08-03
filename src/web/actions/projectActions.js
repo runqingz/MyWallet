@@ -17,17 +17,15 @@ export const getProject = (id) => (dispatch) => axios.get(`/api/project/${id}`).
   });
 });
 
-export const deleteProject = (id) => (dispatch) => axios.delete(`/api/project/${id}`).then(() => {
-  dispatch({
-    type: DELETE_PROJECT,
-    payload: id,
-  });
-}).catch((error) => error.response.data);
+export const deleteProject = async (id) => {
+  await axios.delete(`/api/project/${id}`);
+  return { type: DELETE_PROJECT, payload: id };
+};
 
-export const updateProject = (project) => (dispatch) => axios.post('/api/project', project)
-  .then((res) => {
-    dispatch({ type: UPDATE_PROJECT, payload: res.data });
-  }).catch((error) => error.response.data);
+export const updateProject = async (project) => {
+  const res = await axios.post('/api/project', project);
+  return { type: UPDATE_PROJECT, payload: res.data };
+};
 
 export const getProjects = async () => {
   const res = await axios.get('/api/project/all');

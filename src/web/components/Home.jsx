@@ -15,11 +15,10 @@ async function fetchData(dispatch) {
   try {
     const reportAction = await getReportAction();
     message.loading({ content: 'Loading Report', key: 'getReport', duration: 0 });
-
     dispatch(reportAction);
     message.success({ content: 'Success', key: 'getReport', duration: 1 });
   } catch (err) {
-    handleApiError(dispatch, err, 'getReport');
+    handleApiError(err, 'getReport');
   }
 }
 

@@ -47,7 +47,7 @@ function AntdHeader() {
         className="site-page-header-ghost-wrapper"
         subTitle="Smart in saving"
         extra={[
-          <Button key="3">Sign Out</Button>,
+          <Button key="3" href="/login">Sign Out</Button>,
           <DropdownMenu key="more" />,
         ]}
       />

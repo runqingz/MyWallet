@@ -20,7 +20,7 @@ export const UPDATE_TASK = 'UPDATE_TASK';
 
 // Security Action Types
 export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
+export const CLEAR_CURRENT_USER = 'CLEAR_CURRENT_USER';
 
 // Report Action Types
 export const GET_REPORT = 'GET_REPORT';

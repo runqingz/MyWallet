@@ -1,108 +1,80 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Card, message } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { deleteProject, updateProject } from '../../actions/projectActions';
-import { handleAuthenticationError } from '../../actions/securityActions';
 
 import DeleteProjectModal from './DeleteProjectModal';
 import UpdateProjectForm from './UpdateProjectForm';
-import UnauthenticatedModal from '../security/SecurityModal';
 
-const { Meta } = Card;
+import { updateProject, deleteProject } from '../../actions/projectActions';
+import apiErrorAction from '../../actions/apiErrorAction';
+import handleApiError from '../../utils/apiUtils';
 
-class ProjectItem extends Component {
-  constructor() {
-    super();
+export default function ProjectItem({ project }) {
+  const dispatch = useDispatch();
+  const [updateFormVisible, setUpdateFormVisible] = useState(false);
+  const { Meta } = Card;
+  const { id, projectIdentifier } = project;
 
-    this.state = {
-      visible: false,
-    };
-
-    this.onDelete = this.onDelete.bind(this);
-    this.onUpdate = this.onUpdate.bind(this);
-  }
-
-  async onUpdate(values) {
-    const { project } = this.props;
+  async function onUpdate(values) {
     const data = values;
-    data.id = project.id;
+    data.id = id;
 
-    this.setState({ visible: false });
-    message.loading({ content: 'In Progress...', key: 'updateProject', duration: 0 });
+    setUpdateFormVisible(false);
+    try {
+      const action = await updateProject(values);
+      message.loading({ content: 'Loading Projects', key: 'updateProject', duration: 0 });
+      dispatch(action);
 
-    const err = await this.props.updateProject(values);
-    if (err) {
-      if (err.status === 401) {
-        message.error({ content: 'In Progress...', key: 'updateProject', duration: 0.5 });
-        const onOk = () => {
-          this.props.handleAuthenticationError();
-        };
-        UnauthenticatedModal('Invalid Credentials', onOk);
-      } else {
-        message.error({ content: JSON.stringify(err.data), key: 'updateProject', duration: 1 });
-      }
-    } else {
-      message.success({ content: 'Success', key: 'updateProject' });
+      message.success({ content: 'Success', key: 'updateProject', duration: 1 });
+    } catch (err) {
+      const errorAction = apiErrorAction(err);
+      handleApiError(err, 'updateProject');
+      dispatch(errorAction);
     }
   }
 
-  async onDelete(id) {
-    message.loading({ content: 'In Progress...', key: 'deleteProject', duration: 0 });
+  async function onDelete() {
+    try {
+      const action = await deleteProject(projectIdentifier);
+      message.loading({ content: 'Loading Projects', key: 'deleteProject', duration: 0 });
+      dispatch(action);
 
-    const err = await this.props.deleteProject(id);
-    if (err) {
-      if (err.status === 401) {
-        message.error({ content: 'In Progress...', key: 'deleteProject', duration: 0.5 });
-        const onOk = () => {
-          this.props.handleAuthenticationError();
-        };
-        UnauthenticatedModal('Invalid Credentials', onOk);
-      } else {
-        message.error({ content: JSON.stringify(err.data), key: 'deleteProject', duration: 1 });
-      }
-    } else {
-      message.success({ content: 'Success', key: 'deleteProject' });
+      message.success({ content: 'Success', key: 'deleteProject', duration: 1 });
+    } catch (err) {
+      const errorAction = apiErrorAction(err);
+      handleApiError(err, 'deleteProject');
+      dispatch(errorAction);
     }
   }
 
-  render() {
-    const { project } = this.props;
-    return (
-      <div>
-        <Card
-          title={project.projectName}
-          actions={[
-            <EditOutlined key="edit" onClick={() => { this.setState({ visible: true }); }} />,
-            <DeleteOutlined key="delete" onClick={() => { DeleteProjectModal({ id: project.projectIdentifier, onOk: this.onDelete }); }} />,
-          ]}
-          extra={<a href={`/project/${project.projectIdentifier}`}>Details</a>}
-        >
-          <Meta
-            description={project.description}
-          />
-        </Card>
-        <UpdateProjectForm
-          visible={this.state.visible}
-          onUpdate={this.onUpdate}
-          onCancel={() => {
-            this.setState({ visible: false });
-          }}
-          project={project}
+  return (
+    <div>
+      <Card
+        title={project.projectName}
+        actions={[
+          <EditOutlined key="edit" onClick={() => { setUpdateFormVisible(true); }} />,
+          <DeleteOutlined key="delete" onClick={() => { DeleteProjectModal({ onOk: onDelete }); }} />,
+        ]}
+        extra={<a href={`/project/${project.projectIdentifier}`}>Details</a>}
+      >
+        <Meta
+          description={project.description}
         />
-      </div>
-    );
-  }
+      </Card>
+      <UpdateProjectForm
+        visible={updateFormVisible}
+        onUpdate={onUpdate}
+        onCancel={() => {
+          setUpdateFormVisible(false);
+        }}
+        project={project}
+      />
+    </div>
+  );
 }
 
 ProjectItem.propTypes = {
   project: PropTypes.object.isRequired,
-  deleteProject: PropTypes.func.isRequired,
-  updateProject: PropTypes.func.isRequired,
-  handleAuthenticationError: PropTypes.func.isRequired,
 };
-
-export default connect(null,
-  { deleteProject, updateProject, handleAuthenticationError })(ProjectItem);

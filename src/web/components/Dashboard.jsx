@@ -5,10 +5,10 @@ import { message, List } from 'antd';
 
 import ProjectItem from './project/ProjectItem';
 import NewProjectButton from './project/NewProjectButton';
-import handleApiError from '../utils/apiUtils';
 
 import { getProjects } from '../actions/projectActions';
 import apiErrorAction from '../actions/apiErrorAction';
+import handleApiError from '../utils/apiUtils';
 
 async function fetchData(dispatch) {
   try {
