@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Card, message } from 'antd';
+import { Card, message, Button } from 'antd';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import DeleteProjectModal from './DeleteProjectModal';
@@ -16,6 +17,7 @@ export default function ProjectItem({ project }) {
   const [updateFormVisible, setUpdateFormVisible] = useState(false);
   const { Meta } = Card;
   const { id, projectIdentifier } = project;
+  const history = useHistory();
 
   async function onUpdate(values) {
     const data = values;
@@ -57,7 +59,17 @@ export default function ProjectItem({ project }) {
           <EditOutlined key="edit" onClick={() => { setUpdateFormVisible(true); }} />,
           <DeleteOutlined key="delete" onClick={() => { DeleteProjectModal({ onOk: onDelete }); }} />,
         ]}
-        extra={<a href={`/project/${project.projectIdentifier}`}>Details</a>}
+        extra={(
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              history.push(`/project/${project.projectIdentifier}`);
+            }}
+          >
+            Details
+          </Button>
+)}
       >
         <Meta
           description={project.description}

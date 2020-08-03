@@ -10,9 +10,10 @@ export const getBacklogTasks = (id) => (dispatch) => axios.get(`/api/backlog/${i
   });
 });
 
-export const createBacklogTasks = (task, id) => (dispatch) => axios.post(`/api/backlog/${id}`, task).then((res) => {
-  dispatch({ type: CREATE_TASK, payload: res.data });
-});
+export const createBacklogTasks = async (task, id) => {
+  const res = await axios.post(`/api/backlog/${id}`, task);
+  return { type: CREATE_TASK, payload: res.data };
+};
 
 export const deleteTask = (id, taskId) => (dispatch) => axios.delete(`/api/backlog/${id}/${taskId}`).then(() => {
   dispatch({

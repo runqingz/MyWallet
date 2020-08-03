@@ -8,6 +8,7 @@ import IncomeExpenseBarChart from './statistics/IncomeExpenseBarChart';
 import SavingGauge from './statistics/SavingGauge';
 import SavingPieChart from './statistics/SavingPieChart';
 import handleApiError from '../utils/apiUtils';
+import apiErrorAction from '../actions/apiErrorAction';
 
 import getReportAction from '../actions/reportActions';
 
@@ -18,7 +19,9 @@ async function fetchData(dispatch) {
     dispatch(reportAction);
     message.success({ content: 'Success', key: 'getReport', duration: 1 });
   } catch (err) {
+    const errorAction = apiErrorAction(err);
     handleApiError(err, 'getReport');
+    dispatch(errorAction);
   }
 }
 
