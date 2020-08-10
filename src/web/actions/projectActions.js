@@ -5,10 +5,15 @@ import {
   DELETE_PROJECT, CREATE_PROJECT, UPDATE_PROJECT,
 } from './types';
 
-export const createProject = (project) => (dispatch) => axios.post('/api/project', project)
-  .then((res) => {
-    dispatch({ type: CREATE_PROJECT, payload: res.data });
-  }).catch((error) => error.response);
+// export const createProject = (project) => (dispatch) => axios.post('/api/project', project)
+//   .then((res) => {
+//     dispatch({ type: CREATE_PROJECT, payload: res.data });
+//   }).catch((error) => error.response);
+
+export const createProject = async (project) => {
+  const res = await axios.post('/api/project', project);
+  return { type: CREATE_PROJECT, payload: res.data };
+};
 
 export const getProject = (id) => (dispatch) => axios.get(`/api/project/${id}`).then((res) => {
   dispatch({
