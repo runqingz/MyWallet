@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.runz.pmtool.domain.User;
-import static com.runz.pmtool.security.SecurityConstants.EXPIRARION_TIME;
-import static com.runz.pmtool.security.SecurityConstants.SECRET;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -21,11 +20,17 @@ import io.jsonwebtoken.UnsupportedJwtException;
 
 @Component
 public class JwtProvider {
+
+    @Value("${SECRET}")
+    private String secret;
+
+    @Value("${EXPIRATION_TIME}")
+    private Long expirationTime;
     
     public String generateToken(Authentication auth) {
         User user = (User)auth.getPrincipal();
         Date now = new Date();
-        Date expirDate = new Date(now.getTime() + EXPIRARION_TIME);
+        Date expirDate = new Date(now.getTime() + expirationTime);
 
         String userId = Long.toString(user.getId());
         Map<String, Object> claimsMap = new HashMap<>();
@@ -40,13 +45,13 @@ public class JwtProvider {
                 .setClaims(claimsMap)
                 .setIssuedAt(now)
                 .setExpiration(expirDate)
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
     }
 
     public Boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
             return true;
         } catch (SignatureException e) {
             System.out.println("Invalid signature");
@@ -63,7 +68,7 @@ public class JwtProvider {
     }
 
     public Long getUserIdFromJWT(String token) {
-        Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
         String id = (String)claims.get("id");
 
         return Long.parseLong(id);
