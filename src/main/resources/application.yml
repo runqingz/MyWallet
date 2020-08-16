@@ -1,0 +1,12 @@
+#  spring.jpa.hibernate.ddl-auto=update
+#  spring.datasource.url=jdbc:mysql://127.0.0.1:3306/pmt
+#  spring.datasource.username=test
+#  spring.datasource.password=test
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/pmt
+    username: test
+    password: test
