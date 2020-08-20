@@ -6,6 +6,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import com.runz.pmtool.customResponse.StatisticsResponse;
+import com.runz.pmtool.customResponse.StatisticsResponse.StatsScope;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.Task.TaskStatus;
 import com.runz.pmtool.services.MapValidationService;
@@ -82,7 +83,10 @@ public class BacklogController {
 
     //TODO: consider move to a stats controller
     @GetMapping("/stats")
-    public ResponseEntity<?> getUserMonthlySaving(Principal principal) {
+    public ResponseEntity<?> getUserMonthlySaving(Principal principal, @RequestParam(required = true) StatsScope scope) {
+        if (scope == StatsScope.ANNUALY) {
+            return new ResponseEntity<StatisticsResponse>(taskService.userMontlyReport(principal.getName()), HttpStatus.OK);
+        }
 
         return new ResponseEntity<StatisticsResponse>(taskService.userMontlyReport(principal.getName()), HttpStatus.OK);
     }

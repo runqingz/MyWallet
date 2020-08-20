@@ -5,6 +5,10 @@ import java.util.List;
 import com.runz.pmtool.domain.Task.TaskType;
 
 public class StatisticsResponse {
+    public enum StatsScope {
+        ANNUALY, MONTHLY
+    }
+
     private Double totalIncome = 0.0;
     private Double totalExpense = 0.0;
     private List<AggregateSum> incomes;
