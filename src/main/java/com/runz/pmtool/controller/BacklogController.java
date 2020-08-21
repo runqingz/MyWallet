@@ -84,10 +84,6 @@ public class BacklogController {
     //TODO: consider move to a stats controller
     @GetMapping("/stats")
     public ResponseEntity<?> getUserMonthlySaving(Principal principal, @RequestParam(required = true) StatsScope scope) {
-        if (scope == StatsScope.ANNUALY) {
-            return new ResponseEntity<StatisticsResponse>(taskService.userMontlyReport(principal.getName()), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<StatisticsResponse>(taskService.userMontlyReport(principal.getName()), HttpStatus.OK);
+        return new ResponseEntity<StatisticsResponse>(taskService.userReport(principal.getName(), scope), HttpStatus.OK);
     }
 }

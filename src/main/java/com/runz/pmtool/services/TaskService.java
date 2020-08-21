@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.runz.pmtool.customResponse.StatisticsResponse;
+import com.runz.pmtool.customResponse.StatisticsResponse.StatsScope;
 import com.runz.pmtool.domain.Backlog;
 import com.runz.pmtool.domain.Task;
 import com.runz.pmtool.domain.User;
@@ -109,16 +110,27 @@ public class TaskService {
         return tasks.stream().reduce(0.0, (partialValueSum, task) -> partialValueSum + task.getValue(), Double::sum);
     }
 
-    public StatisticsResponse userMontlyReport(String username) {
+    public StatisticsResponse userReport(String username, StatsScope scope) {
         User user = userRepository.findByUsername(username);
         Long userId = user.getId();
         Date date = new Date();
 
         StatisticsResponse stats = new StatisticsResponse();
 
-        stats.setIncomes(taskRepository.findMonthlyIncomeSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
-        stats.setExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
-        stats.setTypedExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByTypeList(userId, TaskStatus.POSTED, date));
+        switch (scope) {
+            case MONTHLY:
+                stats.setIncomes(taskRepository.findMonthlyIncomeSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
+                stats.setExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
+                stats.setTypedExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByTypeList(userId, TaskStatus.POSTED, date));
+                break;
+            case ANNUALY:
+                stats.setIncomes(taskRepository.findAnnualIncomeSumByUserGroupByMonthList(userId, TaskStatus.POSTED, date));
+                stats.setExpenses(taskRepository.findAnnualIncomeSumByUserGroupByMonthList(userId, TaskStatus.POSTED, date));
+                stats.setTypedExpenses(taskRepository.findAnnualExpenseSumByUserGroupByTypeList(userId, TaskStatus.POSTED, date));
+                break;
+            default:
+                break;
+        }
 
         Double totalIncome = taskRepository.findMonthlyIncomeSumByUser(userId, TaskStatus.POSTED, date);
         if(totalIncome != null) stats.setTotalIncome(totalIncome);
