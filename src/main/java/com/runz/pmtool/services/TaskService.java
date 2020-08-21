@@ -114,6 +114,8 @@ public class TaskService {
         User user = userRepository.findByUsername(username);
         Long userId = user.getId();
         Date date = new Date();
+        Double totalIncome = 0.0;
+        Double totalExpense = 0.0;
 
         StatisticsResponse stats = new StatisticsResponse();
 
@@ -122,21 +124,26 @@ public class TaskService {
                 stats.setIncomes(taskRepository.findMonthlyIncomeSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
                 stats.setExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByDayList(userId, TaskStatus.POSTED, date));
                 stats.setTypedExpenses(taskRepository.findMonthlyExpenseSumByUserGroupByTypeList(userId, TaskStatus.POSTED, date));
+                totalIncome = taskRepository.findMonthlyIncomeSumByUser(userId, TaskStatus.POSTED, date);
+                if(totalIncome != null) stats.setTotalIncome(totalIncome);
+
+                totalExpense = taskRepository.findMonthlyExpenseSumByUser(userId, TaskStatus.POSTED, date);
+                if(totalExpense != null) stats.setTotalExpense(totalExpense);
                 break;
             case ANNUALY:
                 stats.setIncomes(taskRepository.findAnnualIncomeSumByUserGroupByMonthList(userId, TaskStatus.POSTED, date));
-                stats.setExpenses(taskRepository.findAnnualIncomeSumByUserGroupByMonthList(userId, TaskStatus.POSTED, date));
+                stats.setExpenses(taskRepository.findAnnualExpenseSumByUserGroupByMonthList(userId, TaskStatus.POSTED, date));
                 stats.setTypedExpenses(taskRepository.findAnnualExpenseSumByUserGroupByTypeList(userId, TaskStatus.POSTED, date));
+                
+                totalIncome = taskRepository.findAnnualIncomeSumByUser(userId, TaskStatus.POSTED, date);
+                if(totalIncome != null) stats.setTotalIncome(totalIncome);
+
+                totalExpense = taskRepository.findAnnualExpenseSumByUser(userId, TaskStatus.POSTED, date);
+                if(totalExpense != null) stats.setTotalExpense(totalExpense);
                 break;
             default:
                 break;
         }
-
-        Double totalIncome = taskRepository.findMonthlyIncomeSumByUser(userId, TaskStatus.POSTED, date);
-        if(totalIncome != null) stats.setTotalIncome(totalIncome);
-
-        Double totalExpense = taskRepository.findMonthlyExpenseSumByUser(userId, TaskStatus.POSTED, date);
-        if(totalExpense != null) stats.setTotalExpense(totalExpense);
 
         return stats;
     }

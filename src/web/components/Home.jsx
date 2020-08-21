@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -12,9 +12,9 @@ import apiErrorAction from '../actions/apiErrorAction';
 
 import getReportAction from '../actions/reportActions';
 
-async function fetchData(dispatch) {
+async function fetchData(dispatch, scope) {
   try {
-    const reportAction = await getReportAction();
+    const reportAction = await getReportAction(scope);
     message.loading({ content: 'Loading Report', key: 'getReport', duration: 0 });
     dispatch(reportAction);
     message.success({ content: 'Success', key: 'getReport', duration: 1 });
@@ -57,10 +57,11 @@ function formatData(report) {
 
 function Home() {
   const dispatch = useDispatch();
+  const [scope, setScope] = useState('MONTHLY');
 
   useEffect(() => {
-    fetchData(dispatch);
-  }, [dispatch]);
+    fetchData(dispatch, scope);
+  }, [dispatch, scope]);
 
   const data = formatData(useSelector((state) => state.report.report));
   const { Title } = Typography;
@@ -73,9 +74,9 @@ function Home() {
             <br />
             <Title level={4}>Report</Title>
             <hr />
-            <Radio.Group defaultValue="month" buttonStyle="solid" style={{ paddingBottom: '20px' }}>
-              <Radio.Button value="month">By Month</Radio.Button>
-              <Radio.Button value="year">By Year</Radio.Button>
+            <Radio.Group defaultValue="MONTHLY" onChange={(e) => { setScope(e.target.value); }} buttonStyle="solid" style={{ paddingBottom: '20px' }}>
+              <Radio.Button value="MONTHLY">By Month</Radio.Button>
+              <Radio.Button value="ANNUALY">By Year</Radio.Button>
             </Radio.Group>
             <Row gutter={[16, 24]}>
               <Col span={16}>

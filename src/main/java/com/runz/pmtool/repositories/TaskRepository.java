@@ -30,18 +30,24 @@ public interface TaskRepository extends CrudRepository<Task, Long>{
     @Query("Select SUM(t.value) AS sum, DAY(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY t.type")
     List<AggregateSum> findMonthlyExpenseSumByUserGroupByTypeList(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 
-    @Query("Select SUM(t.value) AS sum, DAY(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type = 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY MONTH(t.postDate)")
+    @Query("Select SUM(t.value) AS sum, MONTH(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type = 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY MONTH(t.postDate)")
     List<AggregateSum> findAnnualIncomeSumByUserGroupByMonthList(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 
-    @Query("Select SUM(t.value) AS sum, DAY(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY MONTH(t.postDate)")
+    @Query("Select SUM(t.value) AS sum, MONTH(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY MONTH(t.postDate)")
     List<AggregateSum> findAnnualExpenseSumByUserGroupByMonthList(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 
-    @Query("Select SUM(t.value) AS sum, DAY(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND YEAR(t.postDte) = YEAR(:date) GROUP BY t.type")
+    @Query("Select SUM(t.value) AS sum, MONTH(t.postDate) AS group, t.type AS type FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY t.type")
     List<AggregateSum> findAnnualExpenseSumByUserGroupByTypeList(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 
-    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type = 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY DAY(t.user.id)")
+    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type = 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY t.user.id")
     Double findMonthlyIncomeSumByUser(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 
-    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY DAY(t.user.id)")
+    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND MONTH(t.postDate) = MONTH(:date) GROUP BY t.user.id")
     Double findMonthlyExpenseSumByUser(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
+
+    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type = 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY t.user.id")
+    Double findAnnualIncomeSumByUser(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
+
+    @Query("Select SUM(t.value) FROM Task AS t WHERE t.user.id = :userId AND t.type != 'INCOME' AND t.status = :status AND YEAR(t.postDate) = YEAR(:date) GROUP BY t.user.id")
+    Double findAnnualExpenseSumByUser(@Param("userId") Long userId, @Param("status") TaskStatus status, @Param("date") Date date);
 }
