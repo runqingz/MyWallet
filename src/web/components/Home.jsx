@@ -11,6 +11,7 @@ import handleApiError from '../utils/apiUtils';
 import apiErrorAction from '../actions/apiErrorAction';
 
 import getReportAction from '../actions/reportActions';
+import { SCOPE_ANNUALY, SCOPE_MONTHLY } from './statistics/StatisticsConstants';
 
 async function fetchData(dispatch, scope) {
   try {
@@ -48,7 +49,8 @@ function formatData(report) {
     report.typedExpenses.map((item) => (typedExpense.push({
       item: item.type,
       value: Math.abs(item.sum),
-      percent: report.totalExpense === 0 ? 0 : (Math.abs(item.sum) / Math.abs(report.totalExpense)),
+      percent: report.totalExpense === 0 ? 0
+        : ((Math.abs(item.sum) / Math.abs(report.totalExpense))),
     })));
   }
 
@@ -57,7 +59,7 @@ function formatData(report) {
 
 function Home() {
   const dispatch = useDispatch();
-  const [scope, setScope] = useState('MONTHLY');
+  const [scope, setScope] = useState(SCOPE_MONTHLY);
 
   useEffect(() => {
     fetchData(dispatch, scope);
@@ -74,14 +76,14 @@ function Home() {
             <br />
             <Title level={4}>Report</Title>
             <hr />
-            <Radio.Group defaultValue="MONTHLY" onChange={(e) => { setScope(e.target.value); }} buttonStyle="solid" style={{ paddingBottom: '20px' }}>
-              <Radio.Button value="MONTHLY">By Month</Radio.Button>
-              <Radio.Button value="ANNUALY">By Year</Radio.Button>
+            <Radio.Group defaultValue={SCOPE_MONTHLY} onChange={(e) => { setScope(e.target.value); }} buttonStyle="solid" style={{ paddingBottom: '20px' }}>
+              <Radio.Button value={SCOPE_MONTHLY}>By Month</Radio.Button>
+              <Radio.Button value={SCOPE_ANNUALY}>By Year</Radio.Button>
             </Radio.Group>
             <Row gutter={[16, 24]}>
               <Col span={16}>
                 <Card title="Income and Expense">
-                  <IncomeExpenseBarChart data={data.incomes} />
+                  <IncomeExpenseBarChart data={data.incomes} scope={scope} />
                 </Card>
               </Col>
               <Col span={8}>

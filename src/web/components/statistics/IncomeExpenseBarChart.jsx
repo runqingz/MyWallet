@@ -3,13 +3,26 @@ import PropTypes from 'prop-types';
 
 import {
   Chart,
-  Tooltip,
   Interval,
+  Axis,
 } from 'bizcharts';
 
-export default function IncomeExpenseBarChart({ data }) {
+import { SCOPE_MONTHLY } from './StatisticsConstants';
+
+export default function IncomeExpenseBarChart({ data, scope }) {
+  const scale = {
+    group: {
+      alias: scope === SCOPE_MONTHLY ? 'Day' : 'Month',
+    },
+    value: {
+      alias: 'Value',
+    },
+  };
+
   return (
-    <Chart height={200} data={data} autoFit>
+    <Chart pure height={200} data={data} scale={scale} autoFit>
+      <Axis name="group" title />
+      <Axis name="value" title />
       <Interval
         adjust={[
           {
@@ -19,11 +32,11 @@ export default function IncomeExpenseBarChart({ data }) {
         color="name"
         position="group*value"
       />
-      <Tooltip shared />
     </Chart>
   );
 }
 
 IncomeExpenseBarChart.propTypes = {
   data: PropTypes.array.isRequired,
+  scope: PropTypes.string.isRequired,
 };
